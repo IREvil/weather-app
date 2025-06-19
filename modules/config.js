@@ -57,7 +57,7 @@ export const TEST_DATA = {
 }
 
 
-export const apiKey = 'f5080d6b688cc653b1dd2243224b1793';
+export const apiKey = 'api_key';
 
 export const apiUrl = `https://api.openweathermap.org/data/2.5/weather`;
 

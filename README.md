@@ -20,29 +20,29 @@
 
 ### ✅ Funcționalitate
 
-- [ ]  Start automat cu vremea default
-- [ ]  Search pentru orice oraș
-- [ ]  Validare input + erori clare
+- [x]  Start automat cu vremea default
+- [x]  Search pentru orice oraș
+- [x]  Validare input + erori clare
 - [ ]  Loading states pentru toate acțiunile
 
 ### ✅ Cod
 
-- [ ]  4 module JavaScript conectate
-- [ ]  ES6 imports/exports
-- [ ]  Arhitectură modulară
+- [x]  4 module JavaScript conectate
+- [x]  ES6 imports/exports
+- [x]  Arhitectură modulară
 - [ ]  Cod curat și comentat
 - [ ]  Zero erori în consolă
 
 ### ✅ Git & GitHub
 
-- [ ]  Repository public
-- [ ]  Commit history curat
-- [ ]  README complet
-- [ ]  Toate fișierele sincronizate
+- [x]  Repository public
+- [x]  Commit history curat
+- [x]  README complet
+- [x]  Toate fișierele sincronizate
 
 ### ✅ UX & Design
 
-- [ ]  Interfață modernă
+- [?]  Interfață modernă
 - [ ]  Responsive design
 - [ ]  Interacțiuni intuitive
 - [ ]  Feedback vizual pentru toate acțiunile
@@ -52,5 +52,5 @@
 - [ ] Part 4
 
 ## 👨‍💻 Autor
-    
+
 [Info despre tine]

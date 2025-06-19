@@ -6,12 +6,23 @@
     <title>Weather App</title>
     <!-- Link-uri către CSS și JS -->
     <link rel="stylesheet" href="./styles.css">
-    <script src="./app.js"></script>
+    <script src="./app.js" type="module" defer></script>
 </head>
 
 <body>
     <div id="app">
-        <!-- Structura ta aici -->
+        <h1>Weather App</h1>
+        <input type="text" id="city-input" placeholder="Enter a city">
+        <button id="search-btn">Search</button>
+        <div id="weather-info">
+            <h2 id="location">testorino</h2>
+            <p id="temperature">100</p>
+            <p id="description">nice sun sun</p>
+            <p id="humidity"></p>
+            <p id="pressure"></p>
+            <p id="wind"></p>
+            <p id="visibility"></p>
+        </div>
     </div>
 </body>
 

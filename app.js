@@ -8,29 +8,46 @@ import * as config from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 
 
-import('./modules/config.js').then((config) => {
+function defaults() {
     console.log('MOCK_DATA:', config.MOCK_DATA)
-})
 
-import('./modules/weather-service.js').then((service) => {
     console.time('weather-test')
     service.getCurrentWeather('Cluj').then((data) => {
         console.timeEnd('weather-test') // ~1000ms?
         console.log('Received data:', data)
         console.log('City updated?', data.name === 'Cluj')
     })
-})
 
-Promise.all([
-    import('./modules/ui-controller.js'),
-    import('./modules/config.js')
-]).then(([ui, config]) => {
     const elements = ui.elements
     console.log('Elements found:', Object.keys(elements))
     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
     ui.showLoading() // Apare?
     ui.showError('Test') // Apare?
-})
+}
+
+// import('./modules/config.js').then((config) => {
+//     console.log('MOCK_DATA:', config.MOCK_DATA)
+// })
+
+// import('./modules/weather-service.js').then((service) => {
+//     console.time('weather-test')
+//     service.getCurrentWeather('Cluj').then((data) => {
+//         console.timeEnd('weather-test') // ~1000ms?
+//         console.log('Received data:', data)
+//         console.log('City updated?', data.name === 'Cluj')
+//     })
+// })
+
+// Promise.all([
+//     import('./modules/ui-controller.js'),
+//     import('./modules/config.js')
+// ]).then(([ui, config]) => {
+//     const elements = ui.elements
+//     console.log('Elements found:', Object.keys(elements))
+//     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
+//     ui.showLoading() // Apare?
+//     ui.showError('Test') // Apare?
+// })
 
 
 const setupEventListeners = () => {
@@ -44,7 +61,8 @@ const setupEventListeners = () => {
 }
 
 const handleSearch = async () => {
-    const city = document.querySelector('#city-input').value.trim();
+    const cityInput = document.querySelector('#city-input').value.trim();
+    const city = cityInput[0].toUpperCase() + cityInput.slice(1).toLowerCase();
     // Validează input
     if (!isValidCity(city)) {
         console.error('Nume invalid');
@@ -64,7 +82,7 @@ const handleSearch = async () => {
     // Gestionează erorile
     catch (error) {
         console.error(error);
-        showError('Nu s-au gasit date pentru acest oras');
+        ui.showError('Nu s-au gasit date pentru acest oras');
     }
 }
 
@@ -74,4 +92,6 @@ const isValidCity = (city) => {
 }
 
 // Pornește setupEventListeners și displayWeather pentru a rula aplicația
+defaults();
 setupEventListeners();
+

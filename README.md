@@ -42,7 +42,7 @@
 
 ### ✅ UX & Design
 
-- [?]  Interfață modernă
+- [ ]  Interfață modernă
 - [ ]  Responsive design
 - [ ]  Interacțiuni intuitive
 - [ ]  Feedback vizual pentru toate acțiunile

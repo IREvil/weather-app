@@ -6,7 +6,7 @@
 import * as service from './modules/weather-service.js';
 import * as config from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
-
+import * as location from './modules/location-service.js'
 
 function defaults() {
     console.log('MOCK_DATA:', config.MOCK_DATA)
@@ -23,6 +23,13 @@ function defaults() {
     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
     ui.showLoading() // Apare?
     ui.showError('Test') // Apare?
+
+    console.log(
+        'API Key configured?',
+        config.CONFIG.API_KEY !== 'your_api_key_here'
+    )
+    console.log('Endpoints available:', Object.keys(config.API_ENDPOINTS))
+    console.log('Error messages ready:', Object.keys(config.ERROR_MESSAGES))
 }
 
 // import('./modules/config.js').then((config) => {
@@ -72,11 +79,14 @@ const handleSearch = async () => {
     ui.showLoading();
     // Apelează weather service
     try {
-        const weatherData = await service.getCurrentWeather(city);
-        console.log(weatherData)
+        const weatherData = await service.getCurrentWeatherWithFallback(city).then((data) => {
+            console.log('Real data received:', data)
+            console.log('Has temperature?', data.main?.temp !== undefined)
+            console.log('Has description?', data.weather?.[0]?.description !== undefined)
+            return (data)
+        })
         // Ascunde loading, arată rezultat
         ui.hideLoading();
-
         ui.displayWeather(weatherData);
     }
     // Gestionează erorile
@@ -86,12 +96,58 @@ const handleSearch = async () => {
     }
 }
 
+const handleLocationSearch = async () => {
+    try {
+        // Cum folosești noul location service?
+        ui.showLoading('Detectez locația...')
+
+        const coords = await location.getCoords()
+
+        // Cum afișezi diferit pentru GPS vs IP location?
+        if (coords.source === 'ip') {
+            ui.showMessage('*Locație aproximativă bazată pe IP', 'warning')
+        }
+
+        ui.showLoading('Încarc vremea...')
+        const weather = await service.getWeatherByCoords(coords.latitude, coords.longitude)
+        console.log(weather);
+        ui.displayWeather(weather)
+    } catch (error) {
+        // Cum gestionezi când nici un serviciu de locație nu funcționează?
+        ui.showError(`Locația nu a putut fi determinată: ${error.message}`)
+    }
+}
+
 const isValidCity = (city) => {
     // Gol? Prea scurt? Conține cifre/simboluri?
     return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\\s-]+$/.test(city)
 }
 
 // Pornește setupEventListeners și displayWeather pentru a rula aplicația
-defaults();
+// defaults();
+handleLocationSearch()
 setupEventListeners();
+
+// location.getCoords().then((coords) => {
+//     console.log('Coords received:', coords)
+//     console.log('Has lat/lon?', coords.latitude && coords.longitude)
+//     console.log('Source:', coords.source)
+// })
+
+// Testează cu un oraș invalid
+// service.getCurrentWeather('CityThatDoesNotExist123').catch((error) => {
+//     console.log('Error handled gracefully?', error.message.length > 0)
+//     console.log('User-friendly message?', !error.message.includes('404'))
+// })
+// const testUrl = service.buildUrl('/weather', { q: 'Oradea' })
+// console.log(
+//     'URL correct?',
+//     testUrl.includes('Oradea') && testUrl.includes('appid')
+// )
+
+// service.getCurrentWeather('Oradea').then((data) => {
+//     console.log('Real data received:', data)
+//     console.log('Has temperature?', data.main?.temp !== undefined)
+//     console.log('Has description?', data.weather?.[0]?.description !== undefined)
+// })
 

@@ -57,11 +57,26 @@ export const TEST_DATA = {
 }
 
 
-export const apiKey = 'api_key';
+export const CONFIG = {
+    API_KEY: 'dcbffdcbfacd1948a45409b0f445d0d7',
+    API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
+    DEFAULT_UNITS: 'metric',
+    DEFAULT_LANG: 'ro',
+}
 
-export const apiUrl = `https://api.openweathermap.org/data/2.5/weather`;
+// Cum organizezi endpoint-urile pentru a fi ușor de găsit?
+export const API_ENDPOINTS = {
+    CURRENT_WEATHER: '/weather',
+    FORECAST: '/forecast',
+    AIR_QUALITY: '/air_pollution',
+    WEATHER_ALERTS: '/alerts',
+}
 
-
-
-export const defaultUnit = "celsius";
-export const language = "en";
+// Ce mesaje sunt utile când ceva merge prost?
+export const ERROR_MESSAGES = {
+    CITY_NOT_FOUND: 'Orasul nu a fost gasit',
+    NETWORK_ERROR: 'Eroarea de conexiune',
+    PERMISSION_DENIED: 'Accesul la locatie a fost refuzat',
+    LOCATION_NOT_AVAILABLE: 'Locația nu a putut fi preluata',
+    GENERIC_ERROR: 'A aparut o eroare necunoscuta',
+}

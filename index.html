@@ -11,18 +11,73 @@
 
 <body>
     <div id="app">
+        <div class="controls">
+            <div class="control-group">
+                <!-- <label for="unit-select">Unitatea temperaturii:</label>
+                <select id="unit-select"> -->
+                <label for="unit-select" class="switch">
+                    <input type="checkbox" id="unit-select">
+                    <span class="slider round"></span>
+                </label>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="lang-select">🌐</label>
+                <select id="lang-select">
+                    <option value="en">EN</option>
+                    <option value="ro">RO</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden"></div>
+        <div id="error" class="hidden"></div>
+
         <h1>Vreme</h1>
         <input type="text" id="city-input" placeholder="Cauta un oras...">
         <button id="search-btn">Cauta</button>
         <div id="weather-info">
-            <h2 id="location"></h2>
-            <p id="temperature"></p>
-            <p id="description"></p>
-            <p id="humidity"></p>
-            <p id="pressure"></p>
-            <p id="wind"></p>
-            <p id="visibility"></p>
+            <div>
+                <h2 id="location"></h2>
+                <div id="message" class="hidden"></div>
+            </div>
+
+            <div id="data-container">
+                <div class="data-line">
+                    <i id="temp-icon"></i>
+                    <span class="data-label">Temperatura:</span>
+                    <span id="temperature"></span>
+                </div>
+                <div class="data-line">
+                    <i id="desc-icon"></i>
+                    <span class="data-label">Descriere:</span>
+                    <span id="description"></span>
+                </div>
+                <div class="data-line">
+                    <i id="humidity-icon"></i>
+                    <span class="data-label">Umiditate:</span>
+                    <span id="humidity"></span>
+                </div>
+                <div class="data-line">
+                    <i id="temp-icon"></i>
+                    <span class="data-label">Presiune:</span>
+                    <span id="pressure"></span>
+                </div>
+                <div class="data-line">
+                    <i id="wind-icon"></i>
+                    <span class="data-label">Vant:</span>
+                    <span id="wind"></span>
+                </div>
+                <div class="data-line">
+                    <i id="vis-icon"></i>
+                    <span class="data-label">Vizibilitate:</span>
+                    <span id="visibility"></span>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </body>
 

@@ -1,4 +1,7 @@
 export const elements = {
+    loading: document.querySelector('#loading'),
+    error: document.querySelector('#error'),
+    message: document.querySelector('#message'),
     cityInput: document.querySelector('#city-input'),
     searchButton: document.querySelector('#searchButton'),
     weatherInfo: document.querySelector('#weather-info'),
@@ -9,6 +12,8 @@ export const elements = {
     humidityInfo: document.querySelector('#humidity'),
     pressureInfo: document.querySelector('#pressure'),
     visibilityInfo: document.querySelector('#visibility'),
+    unitSelect: document.getElementById('unit-select'),
+    langSelect: document.getElementById('lang-select'),
 }
 
 export function showLoading() {
@@ -21,23 +26,44 @@ export function hideLoading() {
 
 export function showError(message) {
     console.error(`Error: ${message}`)
+    elements.error.textContent = message;
+    elements.error.classList.remove("hidden");
+    elements.weatherInfo.classList.add("hidden");
+}
+
+export function showMessage(message) {
+    console.log(`Message: ${message}`)
+    elements.message.textContent = message;
+    elements.message.classList.remove("hidden");
+    elements.message.styles = "fontSize: 1.5px"
+    // elements.error.classList.toggle("warning", type === "warning");
 }
 
 export const displayWeather = (weatherData) => {
 
-    elements.weatherInfo.innerHTML = `
-        <h2>${weatherData.name}</h2>
-        <p>Temperature: ${((weatherData.main.temp - 32) * 5 / 9).toFixed(0)}°C</p>
-        <p>Description: ${weatherData.weather[0].description}</p>
-        <p>Wind Speed: ${weatherData.wind.speed} m/s</p>
-        <p>Humidity: ${weatherData.main.humidity}%</p>
-        <p>Pressure: ${weatherData.main.pressure} hPa</p>
-       <p>Visibility: ${weatherData.visibility} m</p>
-    `
-
+    console.log(weatherData.main.temp)
+    // elements.weatherInfo.innerHTML = `
+    //     <h2>${weatherData.name}</h2>
+    //     <p>Temperature: ${weatherData.main.temp}°C</p>
+    //     <p>Description: ${weatherData.weather[0].description}</p>
+    //     <p>Wind Speed: ${weatherData.wind.speed} m/s</p>
+    //     <p>Humidity: ${weatherData.main.humidity}%</p>
+    //     <p>Pressure: ${weatherData.main.pressure} hPa</p>
+    //    <p>Visibility: ${weatherData.visibility} m</p>
+    // `
+    elements.locationInfo.textContent = `${weatherData.name}`
+    elements.temperatureInfo.textContent = `${weatherData.main.temp}°C`
+    elements.descriptionInfo.textContent = weatherData.weather[0].description
+    elements.windInfo.textContent = weatherData.wind.speed + ' m/s'
+    elements.humidityInfo.textContent = weatherData.main.humidity + '%'
+    elements.pressureInfo.textContent = weatherData.main.pressure + ' hPa'
+    elements.visibilityInfo.textContent = weatherData.visibility + ' m'
 
     console.log(weatherData)
 }
+
+
+// <p>Temperature: ${((weatherData.main.temp - 32) * 5 / 9).toFixed(0)}°C</p
 
 export function getCityInput() {
     return elements.cityInput.value
@@ -45,4 +71,31 @@ export function getCityInput() {
 
 export function clearInput() {
     elements.cityInput.value = ''
+}
+
+
+// Funcție pentru actualizarea simbolului temperaturii
+export const updateTemperatureDisplay = (elements, temperature, unit) => {
+    // Cum afișezi temperatura cu simbolul corect?
+    // °C pentru metric, °F pentru imperial?
+    const symbol = /* ce logică folosești? */
+        elements.temperature.textContent = `${temperature}${symbol}`
+}
+
+// Funcție pentru salvarea preferințelor
+export const saveUserPreferences = (unit, lang) => {
+    // Cum folosești localStorage?
+    // Ce chei folosești pentru stocare?
+    localStorage.setItem('weather-unit', unit)
+    localStorage.setItem('language', lang)
+}
+
+// Funcție pentru încărcarea preferințelor
+export const loadUserPreferences = () => {
+    // Cum citești din localStorage?
+    // Ce valori default folosești dacă nu există preferințe?
+    return {
+        unit: localStorage.getItem('weather-unit') || 'metric',
+        lang: localStorage.getItem('language') || 'ro',
+    }
 }

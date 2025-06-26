@@ -1,36 +1,37 @@
 // import { elements, displayWeather, showLoading, hideLoading } from './modules/ui-controller.js';
 // import { getCurrentWeather } from './modules/weather-service.js';
-
+// if (!localStorage.getItem('unit')) localStorage.setItem('unit', 'metric');
+// if (!localStorage.getItem('lang')) localStorage.setItem('lang', 'ro');
 
 
 import * as service from './modules/weather-service.js';
-import * as config from './modules/config.js';
+import { CONFIG } from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 import * as location from './modules/location-service.js'
 
-function defaults() {
-    console.log('MOCK_DATA:', config.MOCK_DATA)
+// function defaults() {
+//     console.log('MOCK_DATA:', config.MOCK_DATA)
 
-    console.time('weather-test')
-    service.getCurrentWeather('Cluj').then((data) => {
-        console.timeEnd('weather-test') // ~1000ms?
-        console.log('Received data:', data)
-        console.log('City updated?', data.name === 'Cluj')
-    })
+//     console.time('weather-test')
+//     service.getCurrentWeather('Cluj').then((data) => {
+//         console.timeEnd('weather-test') // ~1000ms?
+//         console.log('Received data:', data)
+//         console.log('City updated?', data.name === 'Cluj')
+//     })
 
-    const elements = ui.elements
-    console.log('Elements found:', Object.keys(elements))
-    ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
-    ui.showLoading() // Apare?
-    ui.showError('Test') // Apare?
+//     const elements = ui.elements
+//     console.log('Elements found:', Object.keys(elements))
+//     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
+//     ui.showLoading() // Apare?
+//     ui.showError('Test') // Apare?
 
-    console.log(
-        'API Key configured?',
-        config.CONFIG.API_KEY !== 'your_api_key_here'
-    )
-    console.log('Endpoints available:', Object.keys(config.API_ENDPOINTS))
-    console.log('Error messages ready:', Object.keys(config.ERROR_MESSAGES))
-}
+//     console.log(
+//         'API Key configured?',
+//         config.CONFIG.API_KEY !== 'your_api_key_here'
+//     )
+//     console.log('Endpoints available:', Object.keys(config.API_ENDPOINTS))
+//     console.log('Error messages ready:', Object.keys(config.ERROR_MESSAGES))
+// }
 
 // import('./modules/config.js').then((config) => {
 //     console.log('MOCK_DATA:', config.MOCK_DATA)
@@ -56,20 +57,53 @@ function defaults() {
 //     ui.showError('Test') // Apare?
 // })
 
+let tempData;
 
 const setupEventListeners = () => {
     // Submit în form (enter din search field sau click pe buton)
-    document.querySelector('#search-btn').addEventListener('click', handleSearch);
+    ui.elements.searchButton.addEventListener('click', handleSearch);
     document.querySelector('#city-input').addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
     });
+    // document.querySelector("#unit-select")
+    ui.elements.unitSelect.addEventListener('change', function () {
+        const unit = this.checked ? "imperial" : "metric";
+        CONFIG.DEFAULT_UNITS = unit;
+        localStorage.setItem('unit', unit);
+        const currentTemp = ui.elements.temperatureInfo.textContent;
+        let convertedTemp
+        if (unit === "imperial") {
+            convertedTemp = (currentTemp * 9 / 5 + 32).toFixed(1)
+            ui.elements.tempUnit.textContent = "°F";
+            ui.elements.windUnit.textContent = "mph"
+            service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
+                ui.displayWeather(data)
+            })
+        } else {
+            ui.elements.tempUnit.textContent = "°C"
+            ui.elements.windUnit.textContent = "m/s"
+            // convertedTemp = ((currentTemp - 32) * 5 / 9).toFixed(1);
+            // ui.elements.temperatureInfo.textContent = convertedTemp
+            service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
+                ui.displayWeather(data)
+            })
+        }
+    })
+
+    // document.querySelector("#lang-select") 
+    ui.elements.langSelect.addEventListener('change', (e) => {
+        localStorage.setItem('lang', e.target.value);
+        document.documentElement.lang = e.target.value;
+    })
 }
 
 const handleSearch = async () => {
-    const cityInput = document.querySelector('#city-input').value.trim();
-    const city = cityInput[0].toUpperCase() + cityInput.slice(1).toLowerCase();
+    const city = document.querySelector('#city-input').value.trim();
+    // const city = cityInput[0].toUpperCase() + cityInput.slice(1).toLowerCase();
+
+    // const city = new FormData(event.target).get("city");
     // Validează input
     if (!isValidCity(city)) {
         console.error('Nume invalid');
@@ -110,7 +144,6 @@ const handleLocationSearch = async () => {
 
         ui.showLoading('Încarc vremea...')
         const weather = await service.getWeatherByCoords(coords.latitude, coords.longitude)
-        console.log(weather);
         ui.displayWeather(weather)
     } catch (error) {
         // Cum gestionezi când nici un serviciu de locație nu funcționează?
@@ -119,35 +152,42 @@ const handleLocationSearch = async () => {
 }
 
 const isValidCity = (city) => {
-    // Gol? Prea scurt? Conține cifre/simboluri?
-    return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\\s-]+$/.test(city)
+    // Gol? Prea scurt? Conține cifre/simboluri?// ... existing code ...
+    return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\s\s]+$/.test(city);
 }
 
+const loadDefaults = () => {
+
+    CONFIG.DEFAULT_UNITS = localStorage.getItem('unit') || 'metric'
+    console.log(CONFIG.DEFAULT_UNITS)
+    if (CONFIG.DEFAULT_UNITS === 'imperial') {
+        ui.elements.unitSelect.checked = true
+        ui.elements.tempUnit.textContent = "°F"
+        ui.elements.windUnit.textContent = "mph"
+    } else {
+        ui.elements.unitSelect.checked = false
+        ui.elements.tempUnit.textContent = "°C"
+        ui.elements.windUnit.textContent = "m/s"
+    }
+    CONFIG.DEFAULT_LANG = localStorage.getItem('lang') || 'ro'
+    if (CONFIG.DEFAULT_LANG === 'ro') {
+        ui.elements.langSelect.value = 'ro'
+    }
+    else {
+        ui.elements.langSelect.value = 'en'
+    }
+
+    handleLocationSearch()
+    setupEventListeners();
+}
 // Pornește setupEventListeners și displayWeather pentru a rula aplicația
 // defaults();
-handleLocationSearch()
-setupEventListeners();
+loadDefaults()
 
-// location.getCoords().then((coords) => {
-//     console.log('Coords received:', coords)
-//     console.log('Has lat/lon?', coords.latitude && coords.longitude)
-//     console.log('Source:', coords.source)
+
+
+// ui.elements.unitSelect.addEventListener('change', async (e) => {
+//     CONFIG.DEFAULT_UNITS = e.target.value
+//     // Cum reîncărci vremea cu noile setări?
+//     // Cum actualizezi afișarea existentă?
 // })
-
-// Testează cu un oraș invalid
-// service.getCurrentWeather('CityThatDoesNotExist123').catch((error) => {
-//     console.log('Error handled gracefully?', error.message.length > 0)
-//     console.log('User-friendly message?', !error.message.includes('404'))
-// })
-// const testUrl = service.buildUrl('/weather', { q: 'Oradea' })
-// console.log(
-//     'URL correct?',
-//     testUrl.includes('Oradea') && testUrl.includes('appid')
-// )
-
-// service.getCurrentWeather('Oradea').then((data) => {
-//     console.log('Real data received:', data)
-//     console.log('Has temperature?', data.main?.temp !== undefined)
-//     console.log('Has description?', data.weather?.[0]?.description !== undefined)
-// })
-

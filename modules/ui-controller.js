@@ -1,19 +1,24 @@
+import { CONFIG } from './config.js';
+
+
 export const elements = {
     loading: document.querySelector('#loading'),
     error: document.querySelector('#error'),
     message: document.querySelector('#message'),
     cityInput: document.querySelector('#city-input'),
-    searchButton: document.querySelector('#searchButton'),
+    searchButton: document.querySelector('#search-btn'),
     weatherInfo: document.querySelector('#weather-info'),
     locationInfo: document.querySelector('#location'),
     temperatureInfo: document.querySelector('#temperature'),
+    tempUnit: document.querySelector('#temp-unit'),
     descriptionInfo: document.querySelector('#description'),
     windInfo: document.querySelector('#wind'),
+    windUnit: document.querySelector('#wind-unit'),
     humidityInfo: document.querySelector('#humidity'),
     pressureInfo: document.querySelector('#pressure'),
     visibilityInfo: document.querySelector('#visibility'),
-    unitSelect: document.getElementById('unit-select'),
-    langSelect: document.getElementById('lang-select'),
+    unitSelect: document.querySelector('#unit-select'),
+    langSelect: document.querySelector('#lang-select'),
 }
 
 export function showLoading() {
@@ -22,6 +27,8 @@ export function showLoading() {
 
 export function hideLoading() {
     console.log('hide loading')
+    elements.weatherInfo.classList.remove("hidden");
+    elements.error.classList.add("hidden");
 }
 
 export function showError(message) {
@@ -30,6 +37,7 @@ export function showError(message) {
     elements.error.classList.remove("hidden");
     elements.weatherInfo.classList.add("hidden");
 }
+
 
 export function showMessage(message) {
     console.log(`Message: ${message}`)
@@ -41,25 +49,14 @@ export function showMessage(message) {
 
 export const displayWeather = (weatherData) => {
 
-    console.log(weatherData.main.temp)
-    // elements.weatherInfo.innerHTML = `
-    //     <h2>${weatherData.name}</h2>
-    //     <p>Temperature: ${weatherData.main.temp}°C</p>
-    //     <p>Description: ${weatherData.weather[0].description}</p>
-    //     <p>Wind Speed: ${weatherData.wind.speed} m/s</p>
-    //     <p>Humidity: ${weatherData.main.humidity}%</p>
-    //     <p>Pressure: ${weatherData.main.pressure} hPa</p>
-    //    <p>Visibility: ${weatherData.visibility} m</p>
-    // `
     elements.locationInfo.textContent = `${weatherData.name}`
-    elements.temperatureInfo.textContent = `${weatherData.main.temp}°C`
     elements.descriptionInfo.textContent = weatherData.weather[0].description
-    elements.windInfo.textContent = weatherData.wind.speed + ' m/s'
+    elements.temperatureInfo.textContent = weatherData.main.temp.toFixed(1)
+    elements.windInfo.textContent = weatherData.wind.speed
     elements.humidityInfo.textContent = weatherData.main.humidity + '%'
     elements.pressureInfo.textContent = weatherData.main.pressure + ' hPa'
     elements.visibilityInfo.textContent = weatherData.visibility + ' m'
 
-    console.log(weatherData)
 }
 
 
@@ -95,7 +92,7 @@ export const loadUserPreferences = () => {
     // Cum citești din localStorage?
     // Ce valori default folosești dacă nu există preferințe?
     return {
-        unit: localStorage.getItem('weather-unit') || 'metric',
-        lang: localStorage.getItem('language') || 'ro',
+        unit: localStorage.getItem('unit') || 'metric',
+        lang: localStorage.getItem('lang') || 'ro',
     }
 }

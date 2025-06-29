@@ -5,33 +5,37 @@
 
 
 import * as service from './modules/weather-service.js';
-import { CONFIG } from './modules/config.js';
+import { CONFIG, TRANSLATIONS, MOCK_DATA, API_ENDPOINTS, ERROR_MESSAGES } from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 import * as location from './modules/location-service.js'
 
-// function defaults() {
-//     console.log('MOCK_DATA:', config.MOCK_DATA)
+function defaults() {
+    // console.log('MOCK_DATA:', MOCK_DATA)
 
-//     console.time('weather-test')
-//     service.getCurrentWeather('Cluj').then((data) => {
-//         console.timeEnd('weather-test') // ~1000ms?
-//         console.log('Received data:', data)
-//         console.log('City updated?', data.name === 'Cluj')
-//     })
+    // console.time('weather-test')
+    // service.getCurrentWeather('Cluj').then((data) => {
+    //     console.timeEnd('weather-test') // ~1000ms?
+    //     console.log('Received data:', data)
+    //     console.log('City updated?', data.name === 'Cluj')
+    // })
 
-//     const elements = ui.elements
-//     console.log('Elements found:', Object.keys(elements))
-//     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
-//     ui.showLoading() // Apare?
-//     ui.showError('Test') // Apare?
+    // const elements = ui.elements
+    // console.log('Elements found:', Object.keys(elements))
+    // ui.displayWeather(JSON.parse(JSON.stringify(MOCK_DATA.main)))
+    // ui.showLoading() // Apare?
+    // ui.showError('Test') // Apare?
 
-//     console.log(
-//         'API Key configured?',
-//         config.CONFIG.API_KEY !== 'your_api_key_here'
-//     )
-//     console.log('Endpoints available:', Object.keys(config.API_ENDPOINTS))
-//     console.log('Error messages ready:', Object.keys(config.ERROR_MESSAGES))
-// }
+    // console.log(
+    //     'API Key configured?',
+    //     CONFIG.API_KEY !== 'your_api_key_here'
+    // )
+    // console.log('Endpoints available:', Object.keys(API_ENDPOINTS))
+    // console.log('Error messages ready:', Object.keys(ERROR_MESSAGES))
+
+    console.log('Config updated:', CONFIG)
+    console.log('Max history:', CONFIG.MAX_HISTORY_ITEMS)
+
+}
 
 // import('./modules/config.js').then((config) => {
 //     console.log('MOCK_DATA:', config.MOCK_DATA)
@@ -92,10 +96,31 @@ const setupEventListeners = () => {
         }
     })
 
+    ui.elements.themeSelect.addEventListener('change', function () {
+        const theme = this.checked ? "dark" : "light";
+        CONFIG.DEFAULT_THEME = theme;
+        localStorage.setItem('theme', theme);
+        document.body.classList.toggle('dark');
+        ui.themes.main.classList.toggle('dark');
+        ui.themes.recents.classList.toggle('dark');
+    })
+
     // document.querySelector("#lang-select") 
     ui.elements.langSelect.addEventListener('change', (e) => {
         localStorage.setItem('lang', e.target.value);
-        document.documentElement.lang = e.target.value;
+        const lang = e.target.value;
+        document.documentElement.lang = lang;
+
+        document.querySelectorAll('.data-label').forEach(label => {
+            const key = label.dataset.key;
+            if (TRANSLATIONS[lang][key]) {
+                label.textContent = TRANSLATIONS[lang][key];
+            }
+        });
+
+        service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
+            ui.displayWeather(data)
+        })
     })
 }
 
@@ -144,6 +169,7 @@ const handleLocationSearch = async () => {
 
         ui.showLoading('Încarc vremea...')
         const weather = await service.getWeatherByCoords(coords.latitude, coords.longitude)
+        ui.hideLoading();
         ui.displayWeather(weather)
     } catch (error) {
         // Cum gestionezi când nici un serviciu de locație nu funcționează?
@@ -156,7 +182,9 @@ const isValidCity = (city) => {
     return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\s\s]+$/.test(city);
 }
 
+
 const loadDefaults = () => {
+
 
     CONFIG.DEFAULT_UNITS = localStorage.getItem('unit') || 'metric'
     console.log(CONFIG.DEFAULT_UNITS)
@@ -169,6 +197,7 @@ const loadDefaults = () => {
         ui.elements.tempUnit.textContent = "°C"
         ui.elements.windUnit.textContent = "m/s"
     }
+
     CONFIG.DEFAULT_LANG = localStorage.getItem('lang') || 'ro'
     if (CONFIG.DEFAULT_LANG === 'ro') {
         ui.elements.langSelect.value = 'ro'
@@ -177,13 +206,44 @@ const loadDefaults = () => {
         ui.elements.langSelect.value = 'en'
     }
 
+    const lang = CONFIG.DEFAULT_LANG
+
+    document.querySelectorAll('.data-label').forEach(label => {
+        const key = label.dataset.key;
+        if (TRANSLATIONS[lang][key]) {
+            label.textContent = TRANSLATIONS[lang][key];
+        }
+    });
+
+    CONFIG.DEFAULT_THEME = localStorage.getItem('theme') || 'light'
+    console.log(CONFIG.DEFAULT_THEME)
+    if (CONFIG.DEFAULT_THEME === 'dark') {
+        ui.elements.themeSelect.checked = true;
+        document.body.classList.toggle('dark');
+        ui.themes.main.classList.toggle('dark');
+        ui.themes.recents.classList.toggle('dark');
+    } else {
+        ui.elements.themeSelect.checked = false
+        document.body.classList.toggle('light');
+        ui.themes.main.classList.toggle('light');
+        ui.themes.recents.classList.toggle('light');
+    }
+
     handleLocationSearch()
     setupEventListeners();
+}
+
+const setTheme = () => {
+
 }
 // Pornește setupEventListeners și displayWeather pentru a rula aplicația
 // defaults();
 loadDefaults()
 
+
+// Get current language from localStorage
+
+// Get all .data-label elements
 
 
 // ui.elements.unitSelect.addEventListener('change', async (e) => {

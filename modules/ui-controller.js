@@ -9,6 +9,7 @@ export const elements = {
     searchButton: document.querySelector('#search-btn'),
     weatherInfo: document.querySelector('#weather-info'),
     locationInfo: document.querySelector('#location'),
+    weatherIcon: document.querySelector('#weather-icon'),
     temperatureInfo: document.querySelector('#temperature'),
     tempUnit: document.querySelector('#temp-unit'),
     descriptionInfo: document.querySelector('#description'),
@@ -19,14 +20,20 @@ export const elements = {
     visibilityInfo: document.querySelector('#visibility'),
     unitSelect: document.querySelector('#unit-select'),
     langSelect: document.querySelector('#lang-select'),
+    themeSelect: document.querySelector('#theme-select'),
+}
+
+export const themes = {
+    main: document.querySelector('#app'),
+    recents: document.querySelector('#history-block'),
 }
 
 export function showLoading() {
-    console.log('loading')
+    elements.error.classList.remove("hidden");
+    elements.weatherInfo.classList.add("hidden");
 }
 
 export function hideLoading() {
-    console.log('hide loading')
     elements.weatherInfo.classList.remove("hidden");
     elements.error.classList.add("hidden");
 }
@@ -56,10 +63,13 @@ export const displayWeather = (weatherData) => {
     elements.humidityInfo.textContent = weatherData.main.humidity + '%'
     elements.pressureInfo.textContent = weatherData.main.pressure + ' hPa'
     elements.visibilityInfo.textContent = weatherData.visibility + ' m'
-
+    elements.weatherIcon.src = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`
+    elements.cityInput.value = ''
 }
 
-
+export const langSwitch = (lang) => {
+    elements
+}
 // <p>Temperature: ${((weatherData.main.temp - 32) * 5 / 9).toFixed(0)}°C</p
 
 export function getCityInput() {
@@ -94,5 +104,7 @@ export const loadUserPreferences = () => {
     return {
         unit: localStorage.getItem('unit') || 'metric',
         lang: localStorage.getItem('lang') || 'ro',
+        theme: localStorage.getItem('theme') || 'light',
     }
+
 }

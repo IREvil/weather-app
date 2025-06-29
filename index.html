@@ -12,6 +12,15 @@
 <body>
     <div id="app">
         <div class="controls">
+
+            <div class="control-group">
+                <label for="theme-select" class="switch">
+                    <input type="checkbox" id="theme-select">
+                    <span class="slider round"></span>
+                </label>
+                </select>
+            </div>
+
             <div class="control-group">
                 <!-- <label for="unit-select">Unitatea temperaturii:</label>
                 <select id="unit-select"> -->
@@ -31,7 +40,7 @@
             </div>
         </div>
 
-        <div id="loading" class="hidden"></div>
+        <div id="loading" class="hidden">Se cauta...</div>
         <div id="error" class="hidden"></div>
 
         <h1>Vreme</h1>
@@ -45,40 +54,48 @@
 
             <div id="data-container">
                 <div class="data-line">
-                    <i id="temp-icon"></i>
-                    <span class="data-label">Temperatura:</span>
+
                     <span id="temperature"></span>
                     <span id="temp-unit"></span>
+
                 </div>
                 <div class="data-line">
-                    <i id="desc-icon"></i>
-                    <span class="data-label">Descriere:</span>
-                    <span id="description"></span>
+                    <img id="weather-icon" src="#" alt="icon" />
+                    <p id="description"></p>
                 </div>
+
                 <div class="data-line">
-                    <i id="humidity-icon"></i>
-                    <span class="data-label">Umiditate:</span>
+                    <i id="humidity-icon">💧</i>
+                    <span class="data-label" data-key="humidity"></span>
                     <span id="humidity"></span>
                 </div>
                 <div class="data-line">
-                    <i id="temp-icon"></i>
-                    <span class="data-label">Presiune:</span>
+                    <i id="pressure-icon">🌡️</i>
+                    <span class="data-label" data-key="pressure"></span>
                     <span id="pressure"></span>
                 </div>
                 <div class="data-line">
-                    <i id="wind-icon"></i>
-                    <span class="data-label">Vant:</span>
+                    <i id="wind-icon">💨</i>
+                    <span class="data-label" data-key="wind"></span>
                     <span id="wind"></span>
                     <span id="wind-unit"></span>
                 </div>
                 <div class="data-line">
-                    <i id="vis-icon"></i>
-                    <span class="data-label">Vizibilitate:</span>
+                    <i id="vis-icon">👁️</i>
+                    <span class="data-label" data-key="visibility"></span>
                     <span id="visibility"></span>
                 </div>
             </div>
 
         </div>
+
+    </div>
+
+    <div id="history-block">
+
+        <ul>history test</ul>
+        <li>city 1</li>
+        <li>city 2</li>
 
     </div>
 </body>

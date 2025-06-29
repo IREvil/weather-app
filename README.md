@@ -1,14 +1,67 @@
 # Weather App 🌦️
 
-[Descriere captivantă]
+Aplicatie de vreme folosind JavaScript, HTML, CSS si API-ul OpenWeatherMap.
 
 ## 🚀 Features
 
-- [ ] Lista cu ce funcționează ACUM
+- [x] Start automat cu vremea default
+- [x] Search pentru orice oras
+- [x] Validare input + erori clare
+- [ ] Istoric cautari recente
+- [ ] (Poate) Prognoza 5+ zile
 
+## 🆕 New Features (Part 3) - in progress
+
+### 📍 Location History
+
+- **Recent searches**: Quick access to previously searched locations
+- **Smart duplicates**: Existing locations move to top instead of duplicating
+- **Persistent storage**: History survives browser restarts
+- **Configurable limit**: Maximum number of stored locations (default: 10)
+- **One-click access**: Click any history item to reload weather
+
+### 📝 Logging Service
+
+- **Multiple levels**: Debug, Info, Warning, Error
+- **Structured format**: Timestamp, level, message, and data
+- **Memory management**: Configurable maximum log entries
+- **Developer tools**: Export logs for debugging (dev mode)
+
+## 🛠️ Technical Implementation
+
+### Modular Architecture
+
+- `modules/logger.js` - Centralized logging system
+- `modules/history-service.js` - Location history management
+- `modules/config.js` - Extended configuration options
+- Enhanced UI controller with history rendering
+
+### Data Persistence
+
+- **localStorage** for history persistence
+- **Error handling** for storage quota exceeded
+- **JSON serialization** for complex data structures
+
+## 🎯 Usage
+
+### Location History
+
+1. Search for any city
+2. Check the "Recent Searches" section
+3. Click any location for instant weather
+4. Use "Clear History" to reset
+
+### Developer Logs
+
+- Open browser console to see application logs
+- Different log levels for various events
+- Structured data for debugging
+ 
 ## 🛠️ Tech Stack
 
-- [Lista tehnologiilor]
+- [HTML]
+- [CSS]
+- [JavaScript]
 
 ## 📦 Instalare
 
@@ -17,40 +70,10 @@
 ## 🗺️ Roadmap
 
 - [x] Part 1: Fundamente
-
-### ✅ Funcționalitate
-
-- [x]  Start automat cu vremea default
-- [x]  Search pentru orice oraș
-- [x]  Validare input + erori clare
-- [ ]  Loading states pentru toate acțiunile
-
-### ✅ Cod
-
-- [x]  4 module JavaScript conectate
-- [x]  ES6 imports/exports
-- [x]  Arhitectură modulară
-- [ ]  Cod curat și comentat
-- [ ]  Zero erori în consolă
-
-### ✅ Git & GitHub
-
-- [x]  Repository public
-- [x]  Commit history curat
-- [x]  README complet
-- [x]  Toate fișierele sincronizate
-
-### ✅ UX & Design
-
-- [ ]  Interfață modernă
-- [ ]  Responsive design
-- [ ]  Interacțiuni intuitive
-- [ ]  Feedback vizual pentru toate acțiunile
-
-- [ ] Part 2: API real
-- [ ] Part 3
+- [x] Part 2: API real
+- [-] Part 3: Implementare istoric cautari
 - [ ] Part 4
 
 ## 👨‍💻 Autor
 
-[Info despre tine]
+[image](https://20627419.fs1.hubspotusercontent-na1.net/hub/20627419/hubfs/The%20Hustle/Assets/Images/1994328366-meme_20201109014803.webp?width=524&height=393&name=1994328366-meme_20201109014803.webp)

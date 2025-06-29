@@ -62,6 +62,17 @@ export const CONFIG = {
     API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
     DEFAULT_UNITS: 'metric',
     DEFAULT_LANG: 'ro',
+    DEFAULT_THEME: 'light',
+    MAX_HISTORY_ITEMS: 10,
+    STORAGE_KEYS: {
+        SEARCH_HISTORY: 'weather_search_history',
+        USER_PREFERENCES: 'weather_user_prefs',
+    },
+    LOGGING: {
+        ENABLED: true,
+        LEVEL: 'info', // 'debug', 'info', 'warn', 'error'
+        MAX_LOGS: 100,
+    },
 }
 
 // Cum organizezi endpoint-urile pentru a fi ușor de găsit?
@@ -80,3 +91,19 @@ export const ERROR_MESSAGES = {
     LOCATION_NOT_AVAILABLE: 'Locația nu a putut fi preluata',
     GENERIC_ERROR: 'A aparut o eroare necunoscuta',
 }
+
+export const TRANSLATIONS = {
+    ro: {
+
+        humidity: "Umiditate:",
+        pressure: "Presiune:",
+        wind: "Vant:",
+        visibility: "Vizibilitate:",
+    },
+    en: {
+        humidity: "Humidity:",
+        pressure: "Pressure:",
+        wind: "Wind:",
+        visibility: "Visibility:",
+    }
+};

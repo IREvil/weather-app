@@ -11,23 +11,50 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #1a1a1a;
+    background-image: url('https://i.postimg.cc/X73Trwbs/light-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: black
 }
 
-#app {
+body.dark {
+    background-image: url('https://i.postimg.cc/JnZvf4s9/dark-background.jpg');
+    color: rgb(201, 201, 201);
+}
+
+#app,
+#forecast,
+#history-block {
     max-width: 400px;
     margin: 0 auto;
     text-align: center;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
-    /* Set the background color to be transparent */
+    background-color: rgba(255, 255, 255, 0.705);
+    /* dark test */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    /* Adjust the alpha value here for the box shadow transparency */
     margin-top: 105px;
+}
+
+#history-block {
+    margin-top: 10px;
+}
+
+#app.dark,
+#forecast.dark,
+#history-block.dark {
+    background-color: rgba(10, 10, 10, 0.555);
 }
 
 h1 {
     font-size: 24px;
+    padding-top: 10px;
+}
+
+h2 {
+    padding-top: 20px;
 }
 
 input[type="text"] {
@@ -67,9 +94,11 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    /* background-color: #ccc; */
+    background-color: #8a8a8abb;
     -webkit-transition: .4s;
     transition: .4s;
+    color: black
 }
 
 .slider:before {
@@ -127,14 +156,17 @@ input:checked+.slider:before {
 }
 
 #data-container {
+    padding-top: 30px;
     display: grid;
     gap: 10px;
 }
-
-
 
 .data-label {
     display: inline-block;
     align-items: center;
     gap: 10px;
+}
+
+#description {
+    margin-bottom: 20px;
 }

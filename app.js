@@ -8,6 +8,7 @@ import * as service from './modules/weather-service.js';
 import { CONFIG, TRANSLATIONS, MOCK_DATA, API_ENDPOINTS, ERROR_MESSAGES } from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 import * as location from './modules/location-service.js'
+import { map, loadMapDef, onMapClick } from './modules/map-service.js'
 
 function defaults() {
     // console.log('MOCK_DATA:', MOCK_DATA)
@@ -61,8 +62,6 @@ function defaults() {
 //     ui.showError('Test') // Apare?
 // })
 
-let tempData;
-
 const setupEventListeners = () => {
     // Submit în form (enter din search field sau click pe buton)
     ui.elements.searchButton.addEventListener('click', handleSearch);
@@ -103,6 +102,8 @@ const setupEventListeners = () => {
         document.body.classList.toggle('dark');
         ui.themes.main.classList.toggle('dark');
         ui.themes.recents.classList.toggle('dark');
+        ui.themes.forecast.classList.toggle('dark');
+        ui.themes.map.classList.toggle('dark');
     })
 
     // document.querySelector("#lang-select") 
@@ -182,7 +183,6 @@ const isValidCity = (city) => {
     return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\s\s]+$/.test(city);
 }
 
-
 const loadDefaults = () => {
 
 
@@ -192,11 +192,12 @@ const loadDefaults = () => {
         ui.elements.unitSelect.checked = true
         ui.elements.tempUnit.textContent = "°F"
         ui.elements.windUnit.textContent = "mph"
-    } else {
-        ui.elements.unitSelect.checked = false
-        ui.elements.tempUnit.textContent = "°C"
-        ui.elements.windUnit.textContent = "m/s"
     }
+    // } else {
+    //     ui.elements.unitSelect.checked = false
+    //     ui.elements.tempUnit.textContent = "°C"
+    //     ui.elements.windUnit.textContent = "m/s"
+    // }
 
     CONFIG.DEFAULT_LANG = localStorage.getItem('lang') || 'ro'
     if (CONFIG.DEFAULT_LANG === 'ro') {
@@ -206,12 +207,10 @@ const loadDefaults = () => {
         ui.elements.langSelect.value = 'en'
     }
 
-    const lang = CONFIG.DEFAULT_LANG
-
     document.querySelectorAll('.data-label').forEach(label => {
         const key = label.dataset.key;
-        if (TRANSLATIONS[lang][key]) {
-            label.textContent = TRANSLATIONS[lang][key];
+        if (TRANSLATIONS[CONFIG.DEFAULT_LANG][key]) {
+            label.textContent = TRANSLATIONS[CONFIG.DEFAULT_LANG][key];
         }
     });
 
@@ -222,25 +221,26 @@ const loadDefaults = () => {
         document.body.classList.toggle('dark');
         ui.themes.main.classList.toggle('dark');
         ui.themes.recents.classList.toggle('dark');
-    } else {
-        ui.elements.themeSelect.checked = false
-        document.body.classList.toggle('light');
-        ui.themes.main.classList.toggle('light');
-        ui.themes.recents.classList.toggle('light');
+        ui.themes.forecast.classList.toggle('dark');
+        ui.themes.map.classList.toggle('dark');
     }
+    // } else {
+    //     ui.elements.themeSelect.checked = false
+    //     document.body.classList.toggle('light');
+    //     ui.themes.main.classList.toggle('light');
+    //     ui.themes.recents.classList.toggle('light');
+    // }
 
     handleLocationSearch()
+    loadMapDef();
     setupEventListeners();
-}
-
-const setTheme = () => {
-
 }
 // Pornește setupEventListeners și displayWeather pentru a rula aplicația
 // defaults();
 loadDefaults()
 
 
+map.on('click', onMapClick);
 // Get current language from localStorage
 
 // Get all .data-label elements

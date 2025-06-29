@@ -26,6 +26,8 @@ export const elements = {
 export const themes = {
     main: document.querySelector('#app'),
     recents: document.querySelector('#history-block'),
+    forecast: document.querySelector('#forecast-block'),
+    map: document.querySelector('#geo-block')
 }
 
 export function showLoading() {

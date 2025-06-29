@@ -16,7 +16,8 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    color: black
+    color: black;
+
 }
 
 body.dark {
@@ -24,27 +25,50 @@ body.dark {
     color: rgb(201, 201, 201);
 }
 
-#app,
-#forecast,
-#history-block {
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--gap);
+    margin-top: 100px;
+    flex-wrap: wrap;
+}
+
+#main {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 400px;
-    margin: 0 auto;
+    gap: var(--gap);
+}
+
+#app,
+#forecast-block,
+#history-block,
+#geo-block {
+    max-width: 400px;
+    margin: 10px;
     text-align: center;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.705);
-    /* dark test */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-top: 105px;
 }
 
+/* 
+#app {
+    z-index: 1;
+} */
+
 #history-block {
-    margin-top: 10px;
+    max-width: 400px;
 }
 
 #app.dark,
-#forecast.dark,
-#history-block.dark {
+#forecast-block.dark,
+#history-block.dark,
+#geo-block.dark {
     background-color: rgba(10, 10, 10, 0.555);
 }
 
@@ -169,4 +193,9 @@ input:checked+.slider:before {
 
 #description {
     margin-bottom: 20px;
+}
+
+#map {
+    width: 350px;
+    height: 650px;
 }

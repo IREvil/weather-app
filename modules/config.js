@@ -58,7 +58,6 @@ export const TEST_DATA = {
 
 
 export const CONFIG = {
-    API_KEY: '',
     API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
     DEFAULT_UNITS: 'metric',
     DEFAULT_LANG: 'ro',

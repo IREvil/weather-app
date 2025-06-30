@@ -1,5 +1,5 @@
 import { CONFIG } from './config.js';
-
+import { historyService } from './history-service.js';
 
 export const elements = {
     loading: document.querySelector('#loading'),
@@ -21,6 +21,7 @@ export const elements = {
     unitSelect: document.querySelector('#unit-select'),
     langSelect: document.querySelector('#lang-select'),
     themeSelect: document.querySelector('#theme-select'),
+    historyTitle: document.querySelector('#history-title'),
 }
 
 export const themes = {
@@ -109,4 +110,19 @@ export const loadUserPreferences = () => {
         theme: localStorage.getItem('theme') || 'light',
     }
 
+}
+
+export const renderHistory = () => {
+    const history = historyService.getHistory();
+    const historyBlock = document.querySelector('#history');
+    let list = '<ul>';
+    if (history.length === 0) {
+        list += '<li>(fără istoric)</li>';
+    } else {
+        for (const city of history) {
+            list += `<li>${city} <span id="clear-btn">[X]</span></li>`;
+        }
+    }
+    list += '</ul>';
+    historyBlock.innerHTML = list;
 }

@@ -8,7 +8,8 @@ import * as service from './modules/weather-service.js';
 import { CONFIG, TRANSLATIONS, MOCK_DATA, API_ENDPOINTS, ERROR_MESSAGES } from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 import * as location from './modules/location-service.js'
-import { map, loadMapDef, onMapClick } from './modules/map-service.js'
+import { map, loadMapDef, onMapClick } from './modules/map-service.js';
+import { historyService } from './modules/history-service.js';
 
 function defaults() {
     // console.log('MOCK_DATA:', MOCK_DATA)
@@ -70,7 +71,7 @@ const setupEventListeners = () => {
             handleSearch();
         }
     });
-    // document.querySelector("#unit-select")
+
     ui.elements.unitSelect.addEventListener('change', function () {
         const unit = this.checked ? "imperial" : "metric";
         CONFIG.DEFAULT_UNITS = unit;
@@ -87,8 +88,6 @@ const setupEventListeners = () => {
         } else {
             ui.elements.tempUnit.textContent = "°C"
             ui.elements.windUnit.textContent = "m/s"
-            // convertedTemp = ((currentTemp - 32) * 5 / 9).toFixed(1);
-            // ui.elements.temperatureInfo.textContent = convertedTemp
             service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
                 ui.displayWeather(data)
             })
@@ -119,10 +118,12 @@ const setupEventListeners = () => {
             }
         });
 
+
         service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
             ui.displayWeather(data)
         })
     })
+
 }
 
 const handleSearch = async () => {
@@ -148,6 +149,8 @@ const handleSearch = async () => {
         // Ascunde loading, arată rezultat
         ui.hideLoading();
         ui.displayWeather(weatherData);
+        historyService.addLocation(weatherData);
+        ui.renderHistory();
     }
     // Gestionează erorile
     catch (error) {
@@ -172,8 +175,12 @@ const handleLocationSearch = async () => {
         const weather = await service.getWeatherByCoords(coords.latitude, coords.longitude)
         ui.hideLoading();
         ui.displayWeather(weather)
+
+        historyService.addLocation(weather);
+
+        // Update history UI
+        ui.renderHistory();
     } catch (error) {
-        // Cum gestionezi când nici un serviciu de locație nu funcționează?
         ui.showError(`Locația nu a putut fi determinată: ${error.message}`)
     }
 }
@@ -192,12 +199,12 @@ const loadDefaults = () => {
         ui.elements.unitSelect.checked = true
         ui.elements.tempUnit.textContent = "°F"
         ui.elements.windUnit.textContent = "mph"
+
+    } else {
+        ui.elements.unitSelect.checked = false
+        ui.elements.tempUnit.textContent = "°C"
+        ui.elements.windUnit.textContent = "m/s"
     }
-    // } else {
-    //     ui.elements.unitSelect.checked = false
-    //     ui.elements.tempUnit.textContent = "°C"
-    //     ui.elements.windUnit.textContent = "m/s"
-    // }
 
     CONFIG.DEFAULT_LANG = localStorage.getItem('lang') || 'ro'
     if (CONFIG.DEFAULT_LANG === 'ro') {
@@ -224,30 +231,12 @@ const loadDefaults = () => {
         ui.themes.forecast.classList.toggle('dark');
         ui.themes.map.classList.toggle('dark');
     }
-    // } else {
-    //     ui.elements.themeSelect.checked = false
-    //     document.body.classList.toggle('light');
-    //     ui.themes.main.classList.toggle('light');
-    //     ui.themes.recents.classList.toggle('light');
-    // }
 
     handleLocationSearch()
     loadMapDef();
     setupEventListeners();
+    ui.renderHistory();
 }
-// Pornește setupEventListeners și displayWeather pentru a rula aplicația
-// defaults();
+
 loadDefaults()
-
-
 map.on('click', onMapClick);
-// Get current language from localStorage
-
-// Get all .data-label elements
-
-
-// ui.elements.unitSelect.addEventListener('change', async (e) => {
-//     CONFIG.DEFAULT_UNITS = e.target.value
-//     // Cum reîncărci vremea cu noile setări?
-//     // Cum actualizezi afișarea existentă?
-// })

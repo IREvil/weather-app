@@ -58,6 +58,7 @@ export const TEST_DATA = {
 
 
 export const CONFIG = {
+    API_KEY: '',
     API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
     DEFAULT_UNITS: 'metric',
     DEFAULT_LANG: 'ro',
@@ -98,11 +99,13 @@ export const TRANSLATIONS = {
         pressure: "Presiune:",
         wind: "Vant:",
         visibility: "Vizibilitate:",
+        history: "Cautari recente",
     },
     en: {
         humidity: "Humidity:",
         pressure: "Pressure:",
         wind: "Wind:",
         visibility: "Visibility:",
+        history: "Recent searches",
     }
 };

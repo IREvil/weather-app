@@ -1,13 +1,13 @@
 # Weather App 🌦️
 
-Aplicatie de vreme folosind JavaScript, HTML, CSS si API-ul OpenWeatherMap.
+Aplicatie de vreme folosind JavaScript, HTML, CSS si API-uri (OpenWeatherMap, ipapi, Leaflet)
 
 ## 🚀 Features
 
 - [x] Start automat cu vremea default
 - [x] Search pentru orice oras
 - [x] Validare input + erori clare
-- [ ] Istoric cautari recente
+- [x] Istoric cautari recente
 - [ ] (Poate) Prognoza 5+ zile
 
 ## 🆕 New Features (Part 3) - in progress
@@ -71,9 +71,9 @@ Aplicatie de vreme folosind JavaScript, HTML, CSS si API-ul OpenWeatherMap.
 
 - [x] Part 1: Fundamente
 - [x] Part 2: API real
-- [-] Part 3: Implementare istoric cautari
+- [x] Part 3: Implementare istoric cautari
 - [ ] Part 4
 
 ## 👨‍💻 Autor
 
-[image](https://20627419.fs1.hubspotusercontent-na1.net/hub/20627419/hubfs/The%20Hustle/Assets/Images/1994328366-meme_20201109014803.webp?width=524&height=393&name=1994328366-meme_20201109014803.webp)
+![Thsi is fine](https://20627419.fs1.hubspotusercontent-na1.net/hub/20627419/hubfs/The%20Hustle/Assets/Images/1994328366-meme_20201109014803.webp?width=524&height=393&name=1994328366-meme_20201109014803.webp)

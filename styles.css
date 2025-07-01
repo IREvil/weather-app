@@ -84,7 +84,7 @@ body.dark .card-block {
     min-width: 200px;
     flex: 0 0 300px;
     margin: 40px 0 0 0;
-
+    margin-top: 50px;
 }
 
 #geo-block {
@@ -104,7 +104,7 @@ body.dark .card-block {
 }
 
 #app {
-    margin-bottom: ;
+    margin-bottom: 0px;
 }
 
 /* Headings */

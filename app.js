@@ -4,64 +4,21 @@
 // if (!localStorage.getItem('lang')) localStorage.setItem('lang', 'ro');
 
 
+
 import * as service from './modules/weather-service.js';
 import { CONFIG, TRANSLATIONS, MOCK_DATA, API_ENDPOINTS, ERROR_MESSAGES } from './modules/config.js';
 import * as ui from './modules/ui-controller.js';
 import * as location from './modules/location-service.js'
-import { map, loadMapDef, onMapClick } from './modules/map-service.js';
+import { map, loadMapDef, onMapClick, darkLayer, setTheme, satelliteEnabled, currentLayer, currentTheme } from './modules/map-service.js';
 import { historyService } from './modules/history-service.js';
+import { logger } from './modules/logger.js';
 
-function defaults() {
-    // console.log('MOCK_DATA:', MOCK_DATA)
+logger.info('Logger test started')
+logger.debug('Debug message', { test: true })
+logger.warn('Warning message')
+logger.error('Error message', new Error('Test error'))
 
-    // console.time('weather-test')
-    // service.getCurrentWeather('Cluj').then((data) => {
-    //     console.timeEnd('weather-test') // ~1000ms?
-    //     console.log('Received data:', data)
-    //     console.log('City updated?', data.name === 'Cluj')
-    // })
-
-    // const elements = ui.elements
-    // console.log('Elements found:', Object.keys(elements))
-    // ui.displayWeather(JSON.parse(JSON.stringify(MOCK_DATA.main)))
-    // ui.showLoading() // Apare?
-    // ui.showError('Test') // Apare?
-
-    // console.log(
-    //     'API Key configured?',
-    //     CONFIG.API_KEY !== 'your_api_key_here'
-    // )
-    // console.log('Endpoints available:', Object.keys(API_ENDPOINTS))
-    // console.log('Error messages ready:', Object.keys(ERROR_MESSAGES))
-
-    console.log('Config updated:', CONFIG)
-    console.log('Max history:', CONFIG.MAX_HISTORY_ITEMS)
-
-}
-
-// import('./modules/config.js').then((config) => {
-//     console.log('MOCK_DATA:', config.MOCK_DATA)
-// })
-
-// import('./modules/weather-service.js').then((service) => {
-//     console.time('weather-test')
-//     service.getCurrentWeather('Cluj').then((data) => {
-//         console.timeEnd('weather-test') // ~1000ms?
-//         console.log('Received data:', data)
-//         console.log('City updated?', data.name === 'Cluj')
-//     })
-// })
-
-// Promise.all([
-//     import('./modules/ui-controller.js'),
-//     import('./modules/config.js')
-// ]).then(([ui, config]) => {
-//     const elements = ui.elements
-//     console.log('Elements found:', Object.keys(elements))
-//     ui.displayWeather(JSON.parse(JSON.stringify(config.MOCK_DATA.main)))
-//     ui.showLoading() // Apare?
-//     ui.showError('Test') // Apare?
-// })
+console.log('All logs:', logger.getLogs())
 
 const setupEventListeners = () => {
     // Submit în form (enter din search field sau click pe buton)
@@ -98,6 +55,7 @@ const setupEventListeners = () => {
         const theme = this.checked ? "dark" : "light";
         CONFIG.DEFAULT_THEME = theme;
         localStorage.setItem('theme', theme);
+        setTheme(theme)
         document.body.classList.toggle('dark');
         ui.themes.main.classList.toggle('dark');
         ui.themes.recents.classList.toggle('dark');
@@ -118,22 +76,47 @@ const setupEventListeners = () => {
             }
         });
 
-
         service.getCurrentWeather(ui.elements.locationInfo.textContent).then((data) => {
             ui.displayWeather(data)
         })
     })
 
+    ui.elements.historyBlock.addEventListener('click', function (e) {
+        // Remove city
+        if (e.target.classList.contains('clear-btn')) {
+            const city = e.target.getAttribute('data-city');
+            historyService.removeLocation(city);
+            ui.renderHistory();
+            return;
+        }
+        // Reuse city for search
+        if (e.target.classList.contains('history-city')) {
+            const city = e.target.getAttribute('data-city');
+            ui.elements.cityInput.value = city;
+            handleSearch();
+            return;
+        }
+        // Clear all history
+        if (e.target.id === 'clear-history-all') {
+            historyService.clearHistory();
+            ui.renderHistory();
+            return;
+        }
+    });
+
+    map.on('click', function (e) {
+        onMapClick(e);
+        mapWeather(e.latlng);
+        ui.showMessage('Map pin')
+    })
 }
 
 const handleSearch = async () => {
     const city = document.querySelector('#city-input').value.trim();
-    // const city = cityInput[0].toUpperCase() + cityInput.slice(1).toLowerCase();
 
-    // const city = new FormData(event.target).get("city");
     // Validează input
     if (!isValidCity(city)) {
-        console.error('Nume invalid');
+        logger.error('Nume invalid')
         return;
     }
     // Arată loading
@@ -141,13 +124,11 @@ const handleSearch = async () => {
     // Apelează weather service
     try {
         const weatherData = await service.getCurrentWeatherWithFallback(city).then((data) => {
-            console.log('Real data received:', data)
-            console.log('Has temperature?', data.main?.temp !== undefined)
-            console.log('Has description?', data.weather?.[0]?.description !== undefined)
             return (data)
         })
         // Ascunde loading, arată rezultat
         ui.hideLoading();
+        ui.clearMessage()
         ui.displayWeather(weatherData);
         historyService.addLocation(weatherData);
         ui.renderHistory();
@@ -173,8 +154,12 @@ const handleLocationSearch = async () => {
 
         ui.showLoading('Încarc vremea...')
         const weather = await service.getWeatherByCoords(coords.latitude, coords.longitude)
+        // console.log(weather)
         ui.hideLoading();
         ui.displayWeather(weather)
+
+        map.panTo([coords.latitude, coords.longitude], 13);
+        // console.log(coords.latitude, coords.longitude)
 
         historyService.addLocation(weather);
 
@@ -186,15 +171,22 @@ const handleLocationSearch = async () => {
 }
 
 const isValidCity = (city) => {
-    // Gol? Prea scurt? Conține cifre/simboluri?// ... existing code ...
+    // Gol? Prea scurt? Conține cifre/simboluri?
     return city.length >= 2 && /^[a-zA-ZăâîșțĂÂÎȘȚ\s\s]+$/.test(city);
+}
+
+const mapWeather = async (mapCoords) => {
+    const weather = await service.getWeatherByCoords(mapCoords.lat.toFixed(4), mapCoords.lng.toFixed(4))
+    ui.displayWeather(weather)
+    historyService.addLocation(weather);
+    ui.renderHistory();
 }
 
 const loadDefaults = () => {
 
 
     CONFIG.DEFAULT_UNITS = localStorage.getItem('unit') || 'metric'
-    console.log(CONFIG.DEFAULT_UNITS)
+    // console.log(CONFIG.DEFAULT_UNITS)
     if (CONFIG.DEFAULT_UNITS === 'imperial') {
         ui.elements.unitSelect.checked = true
         ui.elements.tempUnit.textContent = "°F"
@@ -222,7 +214,7 @@ const loadDefaults = () => {
     });
 
     CONFIG.DEFAULT_THEME = localStorage.getItem('theme') || 'light'
-    console.log(CONFIG.DEFAULT_THEME)
+    // console.log(CONFIG.DEFAULT_THEME)
     if (CONFIG.DEFAULT_THEME === 'dark') {
         ui.elements.themeSelect.checked = true;
         document.body.classList.toggle('dark');
@@ -231,12 +223,20 @@ const loadDefaults = () => {
         ui.themes.forecast.classList.toggle('dark');
         ui.themes.map.classList.toggle('dark');
     }
-
     handleLocationSearch()
-    loadMapDef();
+    // loadMapDef();
     setupEventListeners();
     ui.renderHistory();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMapDef();
+        setTheme(CONFIG.DEFAULT_THEME)
+        if (CONFIG.DEFAULT_THEME === 'dark') {
+            darkLayer.addTo(map);
+        }
+    });
+
 }
 
 loadDefaults()
-map.on('click', onMapClick);
+

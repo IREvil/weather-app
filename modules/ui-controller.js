@@ -1,5 +1,6 @@
 import { CONFIG } from './config.js';
 import { historyService } from './history-service.js';
+import { logger } from './logger.js';
 
 export const elements = {
     loading: document.querySelector('#loading'),
@@ -22,6 +23,7 @@ export const elements = {
     langSelect: document.querySelector('#lang-select'),
     themeSelect: document.querySelector('#theme-select'),
     historyTitle: document.querySelector('#history-title'),
+    historyBlock: document.querySelector('#history'),
 }
 
 export const themes = {
@@ -42,7 +44,7 @@ export function hideLoading() {
 }
 
 export function showError(message) {
-    console.error(`Error: ${message}`)
+    logger.error('Error:', message)
     elements.error.textContent = message;
     elements.error.classList.remove("hidden");
     elements.weatherInfo.classList.add("hidden");
@@ -50,11 +52,16 @@ export function showError(message) {
 
 
 export function showMessage(message) {
-    console.log(`Message: ${message}`)
+    logger.info('Message:', message)
     elements.message.textContent = message;
     elements.message.classList.remove("hidden");
     elements.message.styles = "fontSize: 1.5px"
     // elements.error.classList.toggle("warning", type === "warning");
+}
+
+export function clearMessage() {
+    elements.message.textContent = '';
+    elements.message.classList.add("hidden");
 }
 
 export const displayWeather = (weatherData) => {
@@ -114,15 +121,20 @@ export const loadUserPreferences = () => {
 
 export const renderHistory = () => {
     const history = historyService.getHistory();
-    const historyBlock = document.querySelector('#history');
-    let list = '<ul>';
+    let list = '<div class="history-list">';
     if (history.length === 0) {
-        list += '<li>(fără istoric)</li>';
+        list += '<span class="history-empty">(fără istoric)</span>';
     } else {
         for (const city of history) {
-            list += `<li>${city} <span id="clear-btn">[X]</span></li>`;
+            list += `<div class="history-chip">
+                <span class="history-city" data-city="${city}">${city}</span>
+                <button class="clear-btn" data-city="${city}" title="Șterge">×</button>
+            </div>`;
         }
     }
-    list += '</ul>';
-    historyBlock.innerHTML = list;
+    list += '</div>';
+    if (history.length > 0) {
+        list += `<button id="clear-history-all">Șterge tot istoricul</button>`;
+    }
+    elements.historyBlock.innerHTML = list;
 }

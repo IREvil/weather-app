@@ -1,4 +1,6 @@
-// modules/location-service.js
+
+import { logger } from "./logger.js"
+
 export const getCoords = () => new Promise((resolve, reject) => {
 
     // Funcția de fallback - când geolocation eșuează
@@ -19,7 +21,8 @@ export const getCoords = () => new Promise((resolve, reject) => {
             })
         } catch (error) {
             // Ce faci când nici IP location nu funcționează?
-            reject(new Error('Nu am putut determina locația'))
+            // reject(new Error('Nu am putut determina locația'))
+            logger.error('Nu am putut determina locația: ', error.message)
         }
     }
 
@@ -38,13 +41,31 @@ export const getCoords = () => new Promise((resolve, reject) => {
                 source: 'gps',
                 accuracy: 'precise',
             })
+
         },
         (error) => {
             // Ce tipuri de erori pot apărea?
             // PERMISSION_DENIED = ?
             // POSITION_UNAVAILABLE = ?
             // TIMEOUT = ?
-            console.warn('Geolocation failed:', error.message)
+            let errorType;
+            switch (error.code) {
+                case 1:
+                    errorType = 'PERMISSION_DENIED';
+                    break;
+                case 2:
+                    errorType = 'POSITION_UNAVAILABLE';
+                    break;
+                case 3:
+                    errorType = 'TIMEOUT';
+                    break;
+                default:
+                    errorType = 'UNKNOWN_ERROR';
+            }
+
+            // console.warn('Geolocation failed:', error.message)
+
+            logger.warn(`Geolocation failed - [${errorType}]: ${error.message}`);
             fallbackToIp()
         },
         {

@@ -1,4 +1,5 @@
 import { CONFIG } from './config.js';
+import { logger } from './logger.js';
 
 export class HistoryService {
     constructor() {
@@ -53,7 +54,7 @@ export class HistoryService {
         this._saveToStorage(history);
 
         if (CONFIG.LOGGING?.ENABLED) {
-            console.info(`[HistoryService] Removed location: ${city}`);
+            logger.info(`Removed location: ${city}`);
         }
     }
 
@@ -62,7 +63,7 @@ export class HistoryService {
         // Salvează în localStorage
         this._saveToStorage([]);
         if (CONFIG.LOGGING?.ENABLED) {
-            console.info(`[HistoryService] Cleared history`);
+            logger.info(`Cleared history`);
         }
     }
 
@@ -71,8 +72,8 @@ export class HistoryService {
         // Gestionează erorile (storage quota exceeded)
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(history));
-        } catch (e) {
-            console.error('[HistoryService] Failed to save history:', e);
+        } catch (err) {
+            logger.error('Failed to save to localStorage:', err.message)
         }
     }
 
@@ -84,8 +85,8 @@ export class HistoryService {
             if (!data) return [];
             const parsed = JSON.parse(data);
             return Array.isArray(parsed) ? parsed : [];
-        } catch (e) {
-            console.error('[HistoryService] Failed to load history:', e);
+        } catch (err) {
+            logger.error('Failed to load history:', err.message);
             return [];
         }
     }

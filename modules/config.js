@@ -1,3 +1,4 @@
+import { api_key } from "./api-stuff.js"
 export const MOCK_DATA = {
     main: {
         "coord": {
@@ -58,7 +59,7 @@ export const TEST_DATA = {
 
 
 export const CONFIG = {
-    API_KEY: '',
+    API_KEY: api_key,
     API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
     DEFAULT_UNITS: 'metric',
     DEFAULT_LANG: 'ro',
@@ -94,14 +95,15 @@ export const ERROR_MESSAGES = {
 
 export const TRANSLATIONS = {
     ro: {
-
+        title: "Vreme",
         humidity: "Umiditate:",
         pressure: "Presiune:",
-        wind: "Vant:",
+        wind: "Vânt:",
         visibility: "Vizibilitate:",
-        history: "Cautari recente",
+        history: "Căutări recente",
     },
     en: {
+        title: "Weather",
         humidity: "Humidity:",
         pressure: "Pressure:",
         wind: "Wind:",

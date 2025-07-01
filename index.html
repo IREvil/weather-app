@@ -15,12 +15,12 @@
 
 <body>
     <div class="container">
-        <div id="forecast-block">
+        <div id="forecast-block" class="card-block">
             <h1>forecast block</h1>
         </div>
 
         <div id="main">
-            <div id="app">
+            <div id="app" class="card-block">
                 <div class="controls">
 
                     <div class="control-group">
@@ -53,7 +53,7 @@
                 <div id="loading" class="hidden">Se cauta...</div>
                 <div id="error" class="hidden"></div>
 
-                <h1>Vreme</h1>
+                <h1 class="data-label" data-key="title">Vreme</h1>
                 <input type="text" id="city-input" placeholder="Cauta un oras...">
                 <button id="search-btn">Cauta</button>
                 <div id="weather-info">
@@ -101,13 +101,13 @@
 
             </div>
 
-            <div id="history-block">
+            <div id="history-block" class="card-block">
                 <h3 class="data-label" data-key="history"></h3>
                 <p id="history"></p>
 
             </div>
         </div>
-        <div id="geo-block">
+        <div id="geo-block" class="card-block">
             <div id="map"></div>
         </div>
     </div>

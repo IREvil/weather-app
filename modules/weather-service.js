@@ -1,4 +1,5 @@
 import { MOCK_DATA, TEST_DATA, CONFIG, API_ENDPOINTS, ERROR_MESSAGES } from './config.js'
+import { logger } from './logger.js'
 
 const makeRequest = async (url) => {
     try {
@@ -7,18 +8,18 @@ const makeRequest = async (url) => {
         // Cum verifici că request-ul a fost successful?
         if (!response.ok) {
             if (response.status === 404) {
-                throw new Error("City not found")
+                logger.error("City not found")
             } else if (response.status === 401) {
-                throw new Error("Unauthorized")
+                logger.error("Unauthorized")
             }
-            throw new Error("Weather API error")
+            logger.error("Weather API error")
         }
 
         return await response.json()
     } catch (error) {
         if (error.name === "TypeError") {
 
-            throw new Error("Network error")
+            logger.error('Network error')
         }
     }
 }
@@ -63,7 +64,7 @@ export const getCurrentWeatherWithFallback = async (city) => {
     } catch (error) {
         // Când folosești fallback?
         // Cum marchezi că datele sunt simulate?
-        console.warn('Using fallback data due to:', error.message)
+        logger.warn('Using fallback data due to:', error.message)
         return {
             ...MOCK_DATA,
             isFallback: true,

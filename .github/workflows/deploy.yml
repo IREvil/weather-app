@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Create apiKey.js with secret
+      - name: Create api-stuff.js with secret
         run: |
           mkdir -p modules
           echo "export const API_KEY = '${{ secrets.MY_API_KEY }}';" > modules/api-stuff.js

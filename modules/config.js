@@ -1,4 +1,12 @@
-import { API_KEY } from "./api-stuff.js"
+let API_KEY;
+
+try {
+    ({ API_KEY } = await import('./api-stuff.js'));
+} catch {
+    ({ API_KEY } = await import('./apiKey.js'));
+}
+
+
 export const MOCK_DATA = {
     main: {
         "coord": {

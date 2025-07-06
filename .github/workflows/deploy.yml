@@ -1,3 +1,24 @@
-- name: Generate apiKey.js
-  run: |
-    echo "export const API_KEY = '${{ secrets.MY_API_KEY }}';" > modules/api-stuff.js
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]  # Change if your default branch is different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Create apiKey.js with secret
+        run: |
+          mkdir -p modules
+          echo "export const API_KEY = '${{ secrets.MY_API_KEY }}';" > modules/api-stuff.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.API_KEY }}
+          publish_dir: ./

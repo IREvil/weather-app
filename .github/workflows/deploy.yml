@@ -15,10 +15,10 @@ jobs:
       - name: Create api-stuff.js with secret
         run: |
           mkdir -p modules
-          echo "export const API_KEY = '${{ secrets.MY_API_KEY }}';" > modules/api-stuff.js
+          echo "export const API_KEY = '${{ secrets.API_KEY }}';" > modules/api-stuff.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./

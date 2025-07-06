@@ -28,11 +28,15 @@ export const satelliteLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/al
     maxZoom: 20
 });
 
+// export const satelliteLayer = L.tileLayer(`http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid=${CONFIG.API_KEY}`, {
+//     maxZoom: 20
+// })
+
 export let currentTheme = 'light';
 export let satelliteEnabled = false;
 
 export let currentLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 20,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
@@ -45,7 +49,7 @@ export function setTheme(theme) {
         currentLayer = darkLayer;
     } else {
         currentLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+            maxZoom: 20
         });
     }
     currentLayer.addTo(map);

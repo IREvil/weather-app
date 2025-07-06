@@ -13,10 +13,10 @@ import { map, loadMapDef, onMapClick, darkLayer, setTheme, satelliteEnabled, cur
 import { historyService } from './modules/history-service.js';
 import { logger } from './modules/logger.js';
 
-logger.info('Logger test started')
-logger.debug('Debug message', { test: true })
-logger.warn('Warning message')
-logger.error('Error message', new Error('Test error'))
+// logger.info('Logger test started')
+// logger.debug('Debug message', { test: true })
+// logger.warn('Warning message')
+// logger.error('Error message', new Error('Test error'))
 
 console.log('All logs:', logger.getLogs())
 
@@ -240,3 +240,17 @@ const loadDefaults = () => {
 
 loadDefaults()
 
+// Măsoară timpii de încărcare
+console.time('app-init')
+// ... codul de inițializare
+console.timeEnd('app-init')
+
+// Monitorizează memory usage
+console.log('Memory usage:', performance.memory?.usedJSHeapSize || 'N/A')
+
+// Verifică răspunsul la event-uri
+document.addEventListener('click', (e) => {
+    console.time('click-response')
+    // ... handler logic
+    console.timeEnd('click-response')
+})

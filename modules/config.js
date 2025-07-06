@@ -1,4 +1,4 @@
-import { api_key } from "./api-stuff.js"
+// import { api_key } from "./api-stuff.js"
 export const MOCK_DATA = {
     main: {
         "coord": {
@@ -59,7 +59,7 @@ export const TEST_DATA = {
 
 
 export const CONFIG = {
-    API_KEY: api_key,
+    API_KEY: secrets.API_KEY,
     API_BASE_URL: 'https://api.openweathermap.org/data/2.5/',
     DEFAULT_UNITS: 'metric',
     DEFAULT_LANG: 'ro',

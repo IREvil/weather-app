@@ -12,15 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Generate api-stuff.js with secret
+      - name: Generate apiKey.js with secret
         run: |
           mkdir -p modules
-          echo "export const API_KEY = '${{ secrets.API_KEY }}';" > modules/api-stuff.js
+          echo "export const API_KEY = '${{ secrets.API_KEY }}';" > modules/apiKey.js
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add modules/api-stuff.js
+          git add modules/apiKey.js
           git commit -m "Inject API key [skip ci]" || echo "No changes to commit"
           git push

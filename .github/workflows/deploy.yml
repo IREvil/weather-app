@@ -1,24 +1,26 @@
-name: Deploy to GitHub Pages
+name: Inject API Key
 
 on:
   push:
-    branches: [main]  # Change if your default branch is different
+    branches: [main]
 
 jobs:
-  deploy:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create api-stuff.js with secret
+      - name: Generate api-stuff.js with secret
         run: |
           mkdir -p modules
           echo "export const API_KEY = '${{ secrets.API_KEY }}';" > modules/api-stuff.js
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add modules/api-stuff.js
+          git commit -m "Inject API key [skip ci]" || echo "No changes to commit"
+          git push

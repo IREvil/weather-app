@@ -12,6 +12,8 @@ export class Logger {
         this.level = CONFIG.LOGGING?.LEVEL || 'info';
     }
 
+
+
     debug(message, data = null) {
         // Loghează doar dacă nivelul permite
         if (this._levelAllowed('debug')) this._log('DEBUG', message, data);
@@ -41,6 +43,11 @@ export class Logger {
 
     // Metodă privată pentru formatarea log-urilor
     _log(level, message, data) {
+
+        if (!CONFIG.LOGGING.ENABLED) {
+            return
+        }
+
         const levels = { debug: 0, info: 1, warn: 2, error: 3 }
         const currentLevel = levels[CONFIG.LOGGING.LEVEL]
         const messageLevel = levels[level]

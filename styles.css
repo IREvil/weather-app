@@ -35,8 +35,9 @@ body.dark {
     gap: 0;
 }
 
-/* Shared card style for main blocks */
-.card-block {
+/* Shared card style */
+.card-block,
+#history-block {
     margin: 10px;
     text-align: center;
     padding: 20px;
@@ -46,22 +47,30 @@ body.dark {
     max-width: 400px;
 }
 
-body.dark .card-block {
+body.dark .card-block,
+body.dark #history-block {
     background-color: rgba(10, 10, 10, 0.555);
 }
 
 /* Main blocks */
-#main {
-    margin-left: auto;
-    margin-right: auto;
+#main,
+#geo-block {
+    margin: 40px 0 0 0;
     max-width: 500px;
     min-width: 300px;
     flex: 1 1 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px 0 0 0;
+}
+
+#main {
     grid-column: 2;
+}
+
+#geo-block {
+    grid-column: 3;
+    justify-self: start;
 }
 
 #forecast-block {
@@ -69,30 +78,12 @@ body.dark .card-block {
     justify-self: end;
     min-width: 200px;
     flex: 0 0 300px;
-    margin: 40px 0 0 0;
-    margin-top: 50px;
+    margin: 50px 0 0 0;
 }
 
-#geo-block {
-    grid-column: 3;
-    justify-self: start;
-    margin: 40px 0 0 0;
-    max-width: 500px;
-    min-width: 300px;
-    flex: 0 0 400px;
-    margin-top: 50px;
-}
-
-/* History block */
-#history-block {
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-
-}
-
+/* App container */
 #app {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     width: 450px;
 }
 
@@ -115,8 +106,9 @@ input[type="text"] {
     border-radius: 5px;
 }
 
-button {
-    background-color: #007BFF;
+button,
+#clear-history-all {
+    background-color: #007bff;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -124,10 +116,16 @@ button {
     cursor: pointer;
 }
 
+#clear-history-all {
+    margin-top: 10px;
+    background: #f44336;
+    padding: 5px 12px;
+}
+
 /* Switch styles */
 .switch {
     position: relative;
-    display: flex;
+    display: inline-block;
     width: 60px;
     height: 34px;
 }
@@ -138,57 +136,91 @@ button {
     height: 0;
 }
 
-.slider {
+.slider,
+.unit-slider,
+.theme-slider {
     position: absolute;
     cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #8a8a8abb;
-    -webkit-transition: .4s;
-    transition: .4s;
-    color: black;
+    transition: 0.4s;
+    box-shadow: 0 0 0 2px #aaa inset, 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.slider:before {
+.slider::before,
+.unit-slider::before,
+.theme-slider::before {
     position: absolute;
     content: "";
     height: 26px;
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked+.slider {
-    background-color: #2196F3;
-}
-
-input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.slider:before {
-    content: "°F";
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    font-size: 1em;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+/* Unit slider: °C / °F */
+.unit-slider::before {
+    content: "°C";
+    color: #000000;
+}
+
+input:checked+.unit-slider::before {
+    content: "°F";
+    color: #000000;
     transform: translateX(26px);
 }
 
-.slider.round {
-    border-radius: 34px;
+/* Theme slider: sun / moon emoji */
+.theme-slider::before {
+    content: "☀️";
+    color: #f7b801;
+    font-size: 1.1em;
 }
 
-.slider.round:before {
-    content: "°C";
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+input:checked+.theme-slider::before {
+    content: "🌙";
+    color: #222;
+    background: #3b4253;
+    transform: translateX(26px);
+}
+
+
+/* Checked slider */
+input:checked+.slider,
+input:checked+.unit-slider,
+input:checked+.theme-slider {
+    background: linear-gradient(135deg, #2c548a, #4378bd);
+    box-shadow: 0 0 0 2px #2c548a;
+}
+
+input:checked+.unit-slider {
+    background: linear-gradient(135deg, #b42a2a, #e03434);
+    box-shadow: 0 0 0 2px #b42a2a;
+}
+
+input:checked+.slider::before {
+    transform: translateX(26px);
+}
+
+/* Optional: hover effect */
+.slider:hover,
+.unit-slider:hover,
+.theme-slider:hover {
+    filter: brightness(1.1);
 }
 
 /* Controls */
@@ -279,16 +311,6 @@ body.dark .history-chip {
 
 .clear-btn:hover {
     background: #ffeaea;
-}
-
-#clear-history-all {
-    margin-top: 10px;
-    background: #f44336;
-    color: #fff;
-    border: none;
-    padding: 5px 12px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 .history-empty {

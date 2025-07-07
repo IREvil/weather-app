@@ -66,8 +66,10 @@ export function clearMessage() {
 
 export const displayWeather = (weatherData) => {
 
-    elements.locationInfo.textContent = `${weatherData.name}`
-    elements.descriptionInfo.textContent = weatherData.weather[0].description
+    const desc = weatherData.weather[0].description
+
+    elements.locationInfo.textContent = weatherData.name
+    elements.descriptionInfo.textContent = desc.charAt(0).toUpperCase() + desc.slice(1)
     elements.temperatureInfo.textContent = weatherData.main.temp.toFixed(1)
     elements.windInfo.textContent = weatherData.wind.speed
     elements.humidityInfo.textContent = weatherData.main.humidity + '%'
@@ -77,10 +79,6 @@ export const displayWeather = (weatherData) => {
     elements.cityInput.value = ''
 }
 
-export const langSwitch = (lang) => {
-    elements
-}
-// <p>Temperature: ${((weatherData.main.temp - 32) * 5 / 9).toFixed(0)}°C</p
 
 export function getCityInput() {
     return elements.cityInput.value

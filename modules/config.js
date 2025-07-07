@@ -78,7 +78,7 @@ export const CONFIG = {
         USER_PREFERENCES: 'weather_user_prefs',
     },
     LOGGING: {
-        ENABLED: true,
+        ENABLED: false,
         LEVEL: 'info', // 'debug', 'info', 'warn', 'error'
         MAX_LOGS: 100,
     },

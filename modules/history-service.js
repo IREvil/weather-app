@@ -35,8 +35,9 @@ export class HistoryService {
 
         this._saveToStorage(history);
 
-        // if (CONFIG.LOGGING?.ENABLED) {
-        //     console.info(`[HistoryService] Added location: ${city}`);
+        if (CONFIG.LOGGING?.ENABLED) {
+            logger.info(`Added location: ${city}`);
+        }
     }
 
     getHistory() {

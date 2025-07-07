@@ -224,33 +224,28 @@ const loadDefaults = () => {
         ui.themes.map.classList.toggle('dark');
     }
     handleLocationSearch()
-    // loadMapDef();
+
     setupEventListeners();
     ui.renderHistory();
 
-    document.addEventListener('DOMContentLoaded', () => {
-        loadMapDef();
-        setTheme(CONFIG.DEFAULT_THEME)
-        if (CONFIG.DEFAULT_THEME === 'dark') {
-            darkLayer.addTo(map);
-        }
-    });
+    loadMapDef();
+    setTheme(CONFIG.DEFAULT_THEME)
 
 }
 
 loadDefaults()
 
-// Măsoară timpii de încărcare
-console.time('app-init')
-// ... codul de inițializare
-console.timeEnd('app-init')
+// // Măsoară timpii de încărcare
+// console.time('app-init')
+// // ... codul de inițializare
+// console.timeEnd('app-init')
 
-// Monitorizează memory usage
-console.log('Memory usage:', performance.memory?.usedJSHeapSize || 'N/A')
+// // Monitorizează memory usage
+// console.log('Memory usage:', performance.memory?.usedJSHeapSize || 'N/A')
 
-// Verifică răspunsul la event-uri
-document.addEventListener('click', (e) => {
-    console.time('click-response')
-    // ... handler logic
-    console.timeEnd('click-response')
-})
+// // Verifică răspunsul la event-uri
+// document.addEventListener('click', (e) => {
+//     console.time('click-response')
+//     // ... handler logic
+//     console.timeEnd('click-response')
+// })

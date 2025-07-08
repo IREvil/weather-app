@@ -71,6 +71,7 @@ body.dark #history-block {
 #geo-block {
     grid-column: 3;
     justify-self: start;
+    margin-top: 50px;
 }
 
 #forecast-block {
@@ -328,4 +329,38 @@ body.dark .history-chip {
     #geo-block {
         max-width: 100vw;
     }
+}
+
+.forecast-card {
+    background: rgba(240, 240, 240, 0.85);
+    border-radius: 8px;
+    padding: 10px 12px;
+    min-width: 100px;
+    max-width: 160px;
+    flex: 1 1 120px;
+    /* allow cards to grow/shrink */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.1s;
+    margin: 5px;
+    /* remove extra margin */
+}
+
+.forecast-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+}
+
+.forecast-card div {
+    margin: 2px 0;
+    font-size: 0.95em;
+}
+
+body.dark .forecast-card {
+    background: rgba(30, 30, 30, 0.8);
+    color: #eee;
 }

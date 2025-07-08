@@ -1,4 +1,3 @@
-import { CONFIG } from './config.js';
 import { historyService } from './history-service.js';
 import { logger } from './logger.js';
 
@@ -24,6 +23,10 @@ export const elements = {
     themeSelect: document.querySelector('#theme-select'),
     historyTitle: document.querySelector('#history-title'),
     historyBlock: document.querySelector('#history'),
+}
+
+export const forecast = {
+
 }
 
 export const themes = {
@@ -56,7 +59,6 @@ export function showMessage(message) {
     elements.message.textContent = message;
     elements.message.classList.remove("hidden");
     elements.message.styles = "fontSize: 1.5px"
-    // elements.error.classList.toggle("warning", type === "warning");
 }
 
 export function clearMessage() {
@@ -88,27 +90,16 @@ export function clearInput() {
     elements.cityInput.value = ''
 }
 
-
-// Funcție pentru actualizarea simbolului temperaturii
 export const updateTemperatureDisplay = (elements, temperature, unit) => {
-    // Cum afișezi temperatura cu simbolul corect?
-    // °C pentru metric, °F pentru imperial?
-    const symbol = /* ce logică folosești? */
-        elements.temperature.textContent = `${temperature}${symbol}`
+    const symbol = elements.temperature.textContent = `${temperature}${symbol}`
 }
 
-// Funcție pentru salvarea preferințelor
 export const saveUserPreferences = (unit, lang) => {
-    // Cum folosești localStorage?
-    // Ce chei folosești pentru stocare?
     localStorage.setItem('weather-unit', unit)
     localStorage.setItem('language', lang)
 }
 
-// Funcție pentru încărcarea preferințelor
 export const loadUserPreferences = () => {
-    // Cum citești din localStorage?
-    // Ce valori default folosești dacă nu există preferințe?
     return {
         unit: localStorage.getItem('unit') || 'metric',
         lang: localStorage.getItem('lang') || 'ro',
@@ -135,4 +126,38 @@ export const renderHistory = () => {
         list += `<button id="clear-history-all">Șterge tot istoricul</button>`;
     }
     elements.historyBlock.innerHTML = list;
+}
+
+export function renderForecast(forecastData) {
+    const container = document.getElementById('forecast-cards');
+    if (!forecastData || !forecastData.list) {
+        container.innerHTML = '<p>No forecast data available.</p>';
+        return;
+    }
+
+    const days = {};
+    forecastData.list.forEach(item => {
+        const date = item.dt_txt.split(' ')[0];
+        if (!days[date]) days[date] = [];
+        days[date].push(item);
+    });
+
+    const dayKeys = Object.keys(days).slice(0, 5);
+
+    container.innerHTML = dayKeys.map(date => {
+        const dayData = days[date];
+        const midday = dayData.reduce((prev, curr) => {
+            return Math.abs(new Date(curr.dt_txt).getHours() - 12) <
+                Math.abs(new Date(prev.dt_txt).getHours() - 12) ? curr : prev;
+        });
+
+        return `
+            <div class="forecast-card">
+                <div>${new Date(date).toLocaleDateString()}</div>
+                <img src="http://openweathermap.org/img/wn/${midday.weather[0].icon}@2x.png" alt="${midday.weather[0].description}">
+                <div>${midday.weather[0].description}</div>
+                <div>${midday.main.temp.toFixed(1)}°</div>
+            </div>
+        `;
+    }).join('');
 }

@@ -1,5 +1,3 @@
-import { CONFIG } from "./config.js";
-
 export let map = L.map('map').setView([45.75, 24.6], 7);
 
 export const loadMapDef = () => {
@@ -28,10 +26,6 @@ export const satelliteLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/al
     maxZoom: 20
 });
 
-// export const satelliteLayer = L.tileLayer(`http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid=${CONFIG.API_KEY}`, {
-//     maxZoom: 20
-// })
-
 export let currentTheme = 'light';
 export let satelliteEnabled = false;
 
@@ -55,7 +49,6 @@ export function setTheme(theme) {
     currentLayer.addTo(map);
 }
 
-// Custom map button control for toggling satellite
 export const SatelliteToggle = L.Control.extend({
     options: { position: 'topright' },
 

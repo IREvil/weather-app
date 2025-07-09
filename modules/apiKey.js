@@ -1,1 +1,1 @@
-const apiKey = window.env.API_KEY;
+export const apiKey = window.env.API_KEY;

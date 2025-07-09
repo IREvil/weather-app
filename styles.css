@@ -365,3 +365,13 @@ body.dark .forecast-card {
     background: rgba(30, 30, 30, 0.8);
     color: #eee;
 }
+
+#map::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.07);
+    /* makes it less dark */
+    pointer-events: none;
+    z-index: 500;
+}

@@ -413,4 +413,8 @@ body.dark .forecast-card {
         width: 100%;
         /* reduce height for mobile */
     }
+
+    #geo-block {
+        max-width: 90%;
+    }
 }

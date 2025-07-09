@@ -2,6 +2,8 @@
 
 Aplicatie de vreme folosind JavaScript, HTML, CSS si API-uri (OpenWeatherMap, ipapi, Leaflet)
 
+[Live demo](https://weather-app-gamma-cyan-64.vercel.app/)
+
 ## 🚀 Features
 
 - [x] Start automat cu vremea default
@@ -29,4 +31,4 @@ Aplicatie de vreme folosind JavaScript, HTML, CSS si API-uri (OpenWeatherMap, ip
 
 ## 👨‍💻 Autor
 
-![Thsi is fine](https://20627419.fs1.hubspotusercontent-na1.net/hub/20627419/hubfs/The%20Hustle/Assets/Images/1994328366-meme_20201109014803.webp?width=524&height=393&name=1994328366-meme_20201109014803.webp)
+![This is fine](https://20627419.fs1.hubspotusercontent-na1.net/hub/20627419/hubfs/The%20Hustle/Assets/Images/1994328366-meme_20201109014803.webp?width=524&height=393&name=1994328366-meme_20201109014803.webp)

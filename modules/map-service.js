@@ -1,3 +1,5 @@
+import { CONFIG } from "./config.js";
+
 export let map = L.map('map').setView([45.75, 24.6], 7);
 
 export const loadMapDef = () => {
@@ -72,6 +74,7 @@ export const SatelliteToggle = L.Control.extend({
             } else {
                 map.removeLayer(satelliteLayer);
                 satelliteEnabled = false;
+                setTheme(CONFIG.DEFAULT_THEME);
             }
         });
 

@@ -16,12 +16,12 @@ export function onMapClick(e) {
         .openOn(map);
 }
 
-export const darkLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+export const darkLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=9a6f31ea-e43e-4da0-81fd-72f64da00ada', {
     attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>',
     maxZoom: 20
 });
 
-export const satelliteLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.png', {
+export const satelliteLayer = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.png?api_key=9a6f31ea-e43e-4da0-81fd-72f64da00ada', {
     attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>',
     maxZoom: 20
 });

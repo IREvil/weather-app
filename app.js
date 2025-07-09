@@ -48,10 +48,10 @@ const setupEventListeners = () => {
 
     ui.elements.themeSelect.addEventListener('change', function () {
         const theme = this.checked ? "dark" : "light"
+        CONFIG.DEFAULT_THEME = theme;
 
+        localStorage.setItem('theme', theme);
         if (theme === 'dark') {
-            CONFIG.DEFAULT_THEME = theme;
-            localStorage.setItem('theme', theme);
             setTheme(theme)
             document.body.classList.toggle('dark');
             ui.themes.main.classList.toggle('dark');

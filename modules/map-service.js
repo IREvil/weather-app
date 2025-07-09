@@ -78,7 +78,6 @@ export const SatelliteToggle = L.Control.extend({
             L.DomEvent.preventDefault(e);
 
             if (!satelliteEnabled) {
-                // map.removeLayer(currentLayer);
                 satelliteLayer.addTo(map);
                 satelliteLabels.addTo(map)
                 satelliteEnabled = true;
@@ -86,9 +85,9 @@ export const SatelliteToggle = L.Control.extend({
             } else {
                 map.removeLayer(satelliteLayer);
                 map.removeLayer(satelliteLabels);
+                map.removeLayer(heatLayer);
                 satelliteEnabled = false;
                 setTheme(CONFIG.DEFAULT_THEME);
-                map.removeLayer(heatLayer);
             }
         });
 

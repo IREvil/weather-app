@@ -47,16 +47,24 @@ const setupEventListeners = () => {
     })
 
     ui.elements.themeSelect.addEventListener('change', function () {
-        const theme = this.checked ? "dark" : "light";
-        CONFIG.DEFAULT_THEME = theme;
-        localStorage.setItem('theme', theme);
-        setTheme(theme)
-        document.body.classList.toggle('dark');
-        ui.themes.main.classList.toggle('dark');
-        ui.themes.recents.classList.toggle('dark');
-        ui.themes.forecast.classList.toggle('dark');
-        ui.themes.map.classList.toggle('dark');
-    })
+        const theme = this.checked ? "dark" : "light"
+
+        if (theme === 'dark') {
+            CONFIG.DEFAULT_THEME = theme;
+            localStorage.setItem('theme', theme);
+            setTheme(theme)
+            document.body.classList.toggle('dark');
+            ui.themes.main.classList.toggle('dark');
+            ui.themes.recents.classList.toggle('dark');
+            ui.themes.forecast.classList.toggle('dark');
+            ui.themes.map.classList.toggle('dark');
+        } else {
+            document.body.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            setTheme(theme)
+        }
+    }
+    )
 
     ui.elements.langSelect.addEventListener('change', (e) => {
         localStorage.setItem('lang', e.target.value);
@@ -205,6 +213,9 @@ const loadDefaults = () => {
         ui.themes.recents.classList.toggle('dark');
         ui.themes.forecast.classList.toggle('dark');
         ui.themes.map.classList.toggle('dark');
+    } else {
+        document.body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
     }
     handleLocationSearch()
 

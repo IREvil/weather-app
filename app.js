@@ -47,24 +47,26 @@ const setupEventListeners = () => {
     })
 
     ui.elements.themeSelect.addEventListener('change', function () {
-        const theme = this.checked ? "dark" : "light"
+        const theme = this.checked ? "dark" : "light";
+
+        CONFIG.DEFAULT_THEME = theme;
+        localStorage.setItem('theme', theme);
+        setTheme(theme);
 
         if (theme === 'dark') {
-            CONFIG.DEFAULT_THEME = theme;
-            localStorage.setItem('theme', theme);
-            setTheme(theme)
-            document.body.classList.toggle('dark');
-            ui.themes.main.classList.toggle('dark');
-            ui.themes.recents.classList.toggle('dark');
-            ui.themes.forecast.classList.toggle('dark');
-            ui.themes.map.classList.toggle('dark');
+            document.body.classList.add('dark');
+            ui.themes.main.classList.add('dark');
+            ui.themes.recents.classList.add('dark');
+            ui.themes.forecast.classList.add('dark');
+            ui.themes.map.classList.add('dark');
         } else {
             document.body.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-            setTheme(theme)
+            ui.themes.main.classList.remove('dark');
+            ui.themes.recents.classList.remove('dark');
+            ui.themes.forecast.classList.remove('dark');
+            ui.themes.map.classList.remove('dark');
         }
-    }
-    )
+    });
 
     ui.elements.langSelect.addEventListener('change', (e) => {
         localStorage.setItem('lang', e.target.value);
@@ -205,16 +207,19 @@ const loadDefaults = () => {
         }
     });
 
-    CONFIG.DEFAULT_THEME = localStorage.getItem('theme') || 'light'
     if (CONFIG.DEFAULT_THEME === 'dark') {
         ui.elements.themeSelect.checked = true;
-        document.body.classList.toggle('dark');
-        ui.themes.main.classList.toggle('dark');
-        ui.themes.recents.classList.toggle('dark');
-        ui.themes.forecast.classList.toggle('dark');
-        ui.themes.map.classList.toggle('dark');
+        document.body.classList.add('dark');
+        ui.themes.main.classList.add('dark');
+        ui.themes.recents.classList.add('dark');
+        ui.themes.forecast.classList.add('dark');
+        ui.themes.map.classList.add('dark');
     } else {
         document.body.classList.remove('dark');
+        ui.themes.main.classList.remove('dark');
+        ui.themes.recents.classList.remove('dark');
+        ui.themes.forecast.classList.remove('dark');
+        ui.themes.map.classList.remove('dark');
         localStorage.setItem('theme', 'light');
     }
     handleLocationSearch()

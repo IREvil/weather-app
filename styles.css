@@ -376,6 +376,38 @@ body.dark .forecast-card {
 }
 
 @media (max-width: 900px) {
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #forecast-block {
+        order: 3;
+        /* appears last */
+        width: 100%;
+        max-width: 600px;
+    }
+
+    #main {
+        order: 1;
+        /* appears first */
+        width: 100%;
+        max-width: 600px;
+    }
+
+    #geo-block,
+    #history-block {
+        order: 2;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    #geo-block {
+        order: 3
+    }
+
     .container {
         display: flex;
         flex-direction: column;

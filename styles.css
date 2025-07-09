@@ -426,6 +426,8 @@ body.dark .forecast-card {
 
     #forecast-block {
         max-height: fit-content;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 
     #forecast-cards {
@@ -435,6 +437,9 @@ body.dark .forecast-card {
         gap: 10px;
     }
 
+    #history-block {
+        margin-bottom: 0px;
+    }
 
     #app {
         width: 100%;

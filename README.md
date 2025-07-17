@@ -20,7 +20,7 @@ Aplicatie de vreme folosind JavaScript, HTML, CSS si API-uri (OpenWeatherMap, ip
 
 ## 📦 Instalare
 
-[Pași clari pentru oricine]
+Code > Download ZIP > index.html 
 
 ## 🗺️ Roadmap
 
